@@ -18,7 +18,7 @@ import torch
 def find_dolphin_dir():
     """Attempts to find the dolphin user directory. None on failure."""
     # candidates = ['~/.dolphin-emu', '~/.local/share/.dolphin-emu']
-    candidates = ['~/.dolphin-emu', '~/.local/share/.dolphin-emu', '~/Library/Application Support/Dolphin']
+    candidates = ['~/.dolphin-emu', '~/.local/share/.dolphin-emu', '~/.local/share/dolphin-emu', '~/Library/Application Support/Dolphin']
     for candidate in candidates:
         path = os.path.expanduser(candidate)
         print(path)
