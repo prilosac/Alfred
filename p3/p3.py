@@ -1,5 +1,5 @@
 import os.path
-import os, signal
+import os, signal, platform
 import subprocess
 import time
 
@@ -116,10 +116,17 @@ def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01,
         pad = p3.pad.Pad(pad_path)
         char = charSwitcher.get(charString)(agent, pad, agentOptions)
 
+        args = []
+        if platform.system() == "Darwin":
+            args = ['/usr/bin/open', '-n', '-a' '/Applications/Dolphin.app', '-e', '/Users/lucasteixeira/Dolphin Games/Super Smash Bros. Melee (v1.02).iso']
+        elif platform.system() == "Linux":
+            args = ['dolphin-emu', '-e', '/home/prilo/DolphinGames/Super Smash Bros. Melee (v1.02).iso']
+        else:
+            sys.exit("Platform not recognized:")
         # process = subprocess.run(['/usr/bin/open', '-n', '-a' '/Applications/Dolphin.app', '-e', '/Users/lucasteixeira/Dolphin Games/Super Smash Bros. Melee (v1.02).iso'], check=True)
-        process = subprocess.Popen(['/usr/bin/open', '-n', '-a' '/Applications/Dolphin.app', '-e', '/Users/lucasteixeira/Dolphin Games/Super Smash Bros. Melee (v1.02).iso'])
+        # process = subprocess.Popen(['/usr/bin/open', '-n', '-a' '/Applications/Dolphin.app', '-e', '/Users/lucasteixeira/Dolphin Games/Super Smash Bros. Melee (v1.02).iso'])
+        process = subprocess.Popen(args)
         dolphinPid = process.pid
-        # process.kill()
 
         # with p3.pad.Pad(pad_path) as pad, p3.memory_watcher.MemoryWatcher(mw_path) as mw:
         #     run(char, state, sm, mw, pad, stats)
