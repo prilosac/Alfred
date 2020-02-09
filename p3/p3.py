@@ -66,9 +66,11 @@ def make_action(state, pad, mm, char):
     elif state.menu == p3.state.Menu.Characters:
         # mm.pick_fox(state, pad)
         char.pick_self(state, pad)
+        mm.press_start_lots(state, pad)
     elif state.menu == p3.state.Menu.Stages:
         # Handle this once we know where the cursor position is in memory.
         pad.tilt_stick(p3.pad.Stick.C, 0.5, 0.5)
+        mm.press_start_lots(state, pad)
     elif state.menu == p3.state.Menu.PostGame:
         mm.press_start_lots(state, pad)
         # raise KeyboardInterrupt

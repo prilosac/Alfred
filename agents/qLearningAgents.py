@@ -83,10 +83,10 @@ class QLearningAgent:
         policyAns = self.policyNet(torch.unsqueeze(state, 2))
         self.policyNet.train(mode=True)
 
-        print(policyAns)
+        # print(policyAns)
         # print(policyAns.max(1))
         # print(policyAns.max(1)[1])
-        print(policyAns.max(1)[1].view(1, 1).item())
+        # print(policyAns.max(1)[1].view(1, 1).item())
 
         return policyAns.max(1)[1].view(1, 1).item()
 
