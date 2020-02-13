@@ -45,7 +45,7 @@ class Yoshi:
         else:
             # Go to yoshi and press A
             target_x = 4.5
-            target_y = 18.8
+            target_y = 18.5
             # >>> choose fox >>>
             # target_x = -23.5
             # target_y = 11.5
@@ -57,7 +57,7 @@ class Yoshi:
             mag = math.sqrt(dx * dx + dy * dy)
             # if state.frame % 200 == 0:
                 # self.printState(state)
-            if mag < 0.3:
+            if mag < 1.3:
                 pad.press_button(p3.pad.Button.A)
                 self.selected = True
                 pad.tilt_stick(p3.pad.Stick.MAIN, 0.5, 0.5)

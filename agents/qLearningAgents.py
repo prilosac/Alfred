@@ -43,7 +43,8 @@ class QLearningAgent:
         self.targetNet.eval()
 
         # self.optimizer = optim.RMSprop(self.policyNet.parameters())
-        self.optimizer = optim.RMSprop(self.policyNet.parameters(), lr=self.learningRate, weight_decay=2)
+        # self.optimizer = optim.RMSprop(self.policyNet.parameters(), lr=self.learningRate, weight_decay=2)
+        self.optimizer = optim.Adam(self.policyNet.parameters(), self.learningRate)
         self.memory = ReplayMemory(1000)
 
     def getAction(self, state):
@@ -80,12 +81,15 @@ class QLearningAgent:
         self.policyNet.train(mode=False)
         # policyAns = self.policyNet(torch.unsqueeze(torch.unsqueeze(torch.tensor(list(state), dtype=torch.double), 1), 0))#.max(1)[1].view(1, 1)
         # print(torch.unsqueeze(state, 2))
+        # print("=================")
+        # print(state)
+        print("   -----------   ")
         policyAns = self.policyNet(torch.unsqueeze(state, 2))
         self.policyNet.train(mode=True)
 
         # print(policyAns)
         # print(policyAns.max(1))
-        # print(policyAns.max(1)[1])
+        print(policyAns.max(1)[1])
         # print(policyAns.max(1)[1].view(1, 1).item())
 
         return policyAns.max(1)[1].view(1, 1).item()

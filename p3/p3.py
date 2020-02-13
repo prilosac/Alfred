@@ -12,6 +12,7 @@ import p3.state_manager
 import p3.stats
 import chars.fox
 import chars.yoshi
+import chars.falco
 import agents.qLearningAgents
 import torch
 
@@ -76,7 +77,7 @@ def make_action(state, pad, mm, char):
         # raise KeyboardInterrupt
         # mm.press_start_lots(state, pad)
 
-def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01, model="nosave", learn=True):
+def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01, model="nosave", learn=True, selfSelect=False, selfChar="Falco", level=9):
     dolphin_dir = find_dolphin_dir()
     if dolphin_dir is None:
         print('Could not find dolphin config dir.')
@@ -90,7 +91,8 @@ def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01,
 
     charSwitcher={
         "Yoshi": chars.yoshi.Yoshi,
-        "Fox": chars.fox.Fox
+        "Fox": chars.fox.Fox,
+        "Falco": chars.falco.Falco
     }
     agentSwitcher={
         "Q": agents.qLearningAgents.QLearningAgent
@@ -126,12 +128,29 @@ def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01,
         else:
             sys.exit("Platform not recognized:")
         # process = subprocess.run(['/usr/bin/open', '-n', '-a' '/Applications/Dolphin.app', '-e', '/Users/lucasteixeira/Dolphin Games/Super Smash Bros. Melee (v1.02).iso'], check=True)
-        # process = subprocess.Popen(['/usr/bin/open', '-n', '-a' '/Applications/Dolphin.app', '-e', '/Users/lucasteixeira/Dolphin Games/Super Smash Bros. Melee (v1.02).iso'])
         process = subprocess.Popen(args)
         dolphinPid = process.pid
 
-        # with p3.pad.Pad(pad_path) as pad, p3.memory_watcher.MemoryWatcher(mw_path) as mw:
-        #     run(char, state, sm, mw, pad, stats)
+        if selfSelect:
+            pad_enemy_path = dolphin_dir + '/Pipes/p2'
+            # mw_path_enemy = dolphin_dir + '/MemoryWatcher/MemoryWatcher'
+            pad_enemy = p3.pad.Pad(pad_enemy_path)
+            char_enemy = charSwitcher.get(selfChar)(agent, pad_enemy, agentOptions)
+
+            with pad_enemy as pad_e, p3.memory_watcher.MemoryWatcher(mw_path) as mw_e:
+                mm = p3.menu_manager.MenuManager()
+                while not char_enemy.selected:
+                    last_frame = state.frame
+                    res_e = next(mw_e)
+                    if res_e is not None:
+                        sm.handle(*res_e)
+                    if state.frame > last_frame:
+                        if not char_enemy.bot_level_set:
+                            char_enemy.set_bot_level(state, pad_e, level=level)
+                        else:
+                            char_enemy.pick_self(state, pad_e)
+                char_enemy.pick_self(state, pad_e)
+        
         with pad as pad, p3.memory_watcher.MemoryWatcher(mw_path) as mw:
             run(char, state, sm, mw, pad, stats)
     except KeyboardInterrupt:
@@ -148,7 +167,7 @@ def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01,
         #     print(process.communicate())
         print('Stopped')
         print(stats)
-        if(model != "nosave"):
+        if(model != "nosave" and learn):
             torch.save(char.agent.policyNet.state_dict(), "models/" + model)
 
 if __name__ == '__main__':
