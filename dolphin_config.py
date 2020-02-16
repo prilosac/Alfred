@@ -1,3 +1,5 @@
+import platform
+
 gale01_ini = """
 [Gecko_Enabled]
 $Netplay Community Settings
