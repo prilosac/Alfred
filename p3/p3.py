@@ -132,24 +132,7 @@ def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01,
         # process = subprocess.Popen(args)
         # dolphinPid = process.pid
 
-        # start(default, headless)
-        args = []
-        if platform.system() == "Darwin":
-            print("Note: Custom and Headless flags do not apply on Mac OS")
-            args = ['/usr/bin/open', '-n', '-a' '/Applications/Dolphin.app', '-e', '/Users/lucasteixeira/Dolphin Games/Super Smash Bros. Melee (v1.02).iso']
-        elif platform.system() == "Linux":
-            if default:
-                args = ['dolphin-emu', '-e', os.path.expanduser('~/DolphinGames/Super Smash Bros. Melee (v1.02).iso')]
-            elif headless:
-                args = [os.path.expanduser('~/dolphin-emu-nogui/build/Binaries/dolphin-emu-nogui'), '-e', os.path.expanduser('~/DolphinGames/Super Smash Bros. Melee (v1.02).iso'), '-u', os.path.expanduser('~/dolphin-emu-nogui/build/Binaries/Sys')]
-            elif not headless:
-                args = [os.path.expanduser('~/dolphin-test/build/Binaries/dolphin-emu'), '-e', os.path.expanduser('~/DolphinGames/Super Smash Bros. Melee (v1.02).iso'), '-u', os.path.expanduser('~/dolphin-test/build/Binaries/Sys')]
-
-        else:
-            sys.exit("Platform not recognized:")
-        # process = subprocess.run(['/usr/bin/open', '-n', '-a' '/Applications/Dolphin.app', '-e', '/Users/lucasteixeira/Dolphin Games/Super Smash Bros. Melee (v1.02).iso'], check=True)
-        process = subprocess.Popen(args)
-        dolphinPid = process.pid
+        start(default, headless)
 
         if selfSelect:
             pad_enemy_path = dolphin_dir + '/Pipes/p2'
