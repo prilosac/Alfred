@@ -78,7 +78,7 @@ def make_action(state, pad, mm, char):
         # raise KeyboardInterrupt
         # mm.press_start_lots(state, pad)
 
-def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01, model="nosave", learn=True, selfSelect=False, selfChar="Falco", level=9, default, headless):
+def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01, model="nosave", learn=True, selfSelect=False, selfChar="Falco", level=9, default=True, headless=False):
     dolphin_dir = find_dolphin_dir()
     if dolphin_dir is None:
         print('Could not find dolphin config dir.')
