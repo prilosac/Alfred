@@ -5,6 +5,11 @@ import os, subprocess
 gale01_ini = """
 [Gecko_Enabled]
 $Netplay Community Settings
+[Controls]
+PadType0 = 6
+PadType1 = 7
+PadType2 = 6
+PadType3 = 0
 """
 
 pipe_config = """
