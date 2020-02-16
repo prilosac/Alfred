@@ -64,13 +64,13 @@ def set_config(dolphin_dir):
         game_dir = '/Users/lucasteixeira/Dolphin Games/'
     elif platform.system() == "Linux":
         # game_dir = '/home/prilo/DolphinGames/Super Smash Bros. Melee (v1.02).iso'
-        game_dir = '~/DolphinGames/'
+        game_dir = path.expanduser('~/DolphinGames/')
 
     if not path.exists(config_dir + '/Dolphin.ini'):
         dolphin_ini_init = open(config_dir + '/Dolphin.ini', 'w')
         dolphin_ini_init.close
 
-    with open(config_dir + '/Dolphin.ini', 'r') as f:
+    with open('./config/Dolphin.ini', 'r') as f:
         dolphin_ini = f.read()
 
     with open(config_dir + '/Dolphin.ini', 'w') as f:
