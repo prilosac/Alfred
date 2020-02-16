@@ -42,6 +42,12 @@ def set_config(dolphin_dir):
     config_dir = dolphin_dir + '/Config'
     if not path.exists(config_dir):
         os.makedirs(config_dir)
+    mw_dir = dolphin_dir + '/MemoryWatcher'
+    if not path.exists(mw_dir):
+        os.makedirs(mw_dir)
+    pipes_dir = dolphin_dir + '/Pipes'
+    if not path.exists(pipes_dir):
+        os.makedirs(pipes_dir)
     with open(config_dir + '/GCPadNew.ini', 'w') as f:
         config_1 = "[GCPad1]\n"
         config_1 += "Device = Pipe/1/p2"
