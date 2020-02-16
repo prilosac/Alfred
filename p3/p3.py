@@ -19,8 +19,8 @@ from dolphin import start
 
 def find_dolphin_dir():
     """Attempts to find the dolphin user directory. None on failure."""
-    # candidates = ['~/.dolphin-emu', '~/.local/share/.dolphin-emu', '~/.local/share/dolphin-emu', '~/Library/Application Support/Dolphin', '~/dolphin-test/build/Binaries/Sys', '~/dolphin-emu-nogui/build/Binaries/Sys']
-    candidates = ['~/dolphin-test/build/Binaries/Sys', '~/dolphin-emu-nogui/build/Binaries/Sys']
+    candidates = ['~/.dolphin-emu', '~/.local/share/.dolphin-emu', '~/.local/share/dolphin-emu', '~/Library/Application Support/Dolphin', '~/dolphin-test/build/Binaries/Sys', '~/dolphin-emu-nogui/build/Binaries/Sys']
+    # candidates = ['~/dolphin-test/build/Binaries/Sys', '~/dolphin-emu-nogui/build/Binaries/Sys']
     for candidate in candidates:
         path = os.path.expanduser(candidate)
         print(path)
@@ -132,9 +132,10 @@ def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01,
         # process = subprocess.Popen(args)
         # dolphinPid = process.pid
 
-        time.sleep(5)
+        time.sleep(1)
+        print(default, headless)
         start(default, headless)
-        time.sleep(0.5)
+        time.sleep(2)
 
         if selfSelect:
             pad_enemy_path = dolphin_dir + '/Pipes/p2'
@@ -142,6 +143,7 @@ def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01,
             pad_enemy = p3.pad.Pad(pad_enemy_path)
             char_enemy = charSwitcher.get(selfChar)(agent, pad_enemy, agentOptions)
 
+            print(mw_path)
             with pad_enemy as pad_e, p3.memory_watcher.MemoryWatcher(mw_path) as mw_e:
                 mm = p3.menu_manager.MenuManager()
                 while not char_enemy.selected:
