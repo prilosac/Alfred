@@ -38,9 +38,9 @@ class MemoryWatcher:
         value is a four-byte string suitable for interpretation with struct.
         """
         try:
-            data = self.sock.recvfrom(1024)[0].decode('utf-8')
-            print(data)
-            data = data.splitlines()
+            data = self.sock.recvfrom(1024)[0].decode('utf-8').splitlines()
+            # print(data)
+            # data = data.splitlines()
         except socket.timeout:
             return None
         print(len(data))
