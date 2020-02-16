@@ -21,10 +21,9 @@ if args.__contains__('-h') or args.__contains__('--headless'):
 if platform.system() == "Linux":
     dolphin_dir = p3.find_dolphin_dir()
     set_config(dolphin_dir)
-
-    start(default, headless)
+    # start(default, headless)
 
 # CharString, Agent, Learning Rate, Discount Rate,
 # Exploration Rate, Exploration Discount, Model
 # Min Exploration Rate
-p3.main("Yoshi", "Q", lr=0.1, dr=0.95, er=1.0, ed=20000, emin=0.01, model="2-11-2020-Adam", learn=learn, selfSelect=True, level=9)
+p3.main("Yoshi", "Q", lr=0.1, dr=0.95, er=1.0, ed=20000, emin=0.01, model="2-11-2020-Adam", learn=learn, selfSelect=True, level=9, default=default, headless=headless)

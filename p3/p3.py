@@ -15,6 +15,7 @@ import chars.yoshi
 import chars.falco
 import agents.qLearningAgents
 import torch
+from dolphin import start
 
 def find_dolphin_dir():
     """Attempts to find the dolphin user directory. None on failure."""
@@ -77,7 +78,7 @@ def make_action(state, pad, mm, char):
         # raise KeyboardInterrupt
         # mm.press_start_lots(state, pad)
 
-def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01, model="nosave", learn=True, selfSelect=False, selfChar="Falco", level=9):
+def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01, model="nosave", learn=True, selfSelect=False, selfChar="Falco", level=9, default, headless):
     dolphin_dir = find_dolphin_dir()
     if dolphin_dir is None:
         print('Could not find dolphin config dir.')
@@ -130,6 +131,8 @@ def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01,
         # # process = subprocess.run(['/usr/bin/open', '-n', '-a' '/Applications/Dolphin.app', '-e', '/Users/lucasteixeira/Dolphin Games/Super Smash Bros. Melee (v1.02).iso'], check=True)
         # process = subprocess.Popen(args)
         # dolphinPid = process.pid
+
+        start(default, headless)
 
         if selfSelect:
             pad_enemy_path = dolphin_dir + '/Pipes/p2'
