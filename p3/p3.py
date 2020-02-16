@@ -18,8 +18,8 @@ import torch
 
 def find_dolphin_dir():
     """Attempts to find the dolphin user directory. None on failure."""
-    # candidates = ['~/.dolphin-emu', '~/.local/share/.dolphin-emu']
-    candidates = ['~/.dolphin-emu', '~/.local/share/.dolphin-emu', '~/.local/share/dolphin-emu', '~/Library/Application Support/Dolphin']
+    # candidates = ['~/.dolphin-emu', '~/.local/share/.dolphin-emu', '~/.local/share/dolphin-emu', '~/Library/Application Support/Dolphin', '~/dolphin-test/build/Binaries/Sys', '~/dolphin-emu-nogui/build/Binaries/Sys']
+    candidates = ['~/dolphin-test/build/Binaries/Sys', '~/dolphin-emu-nogui/build/Binaries/Sys']
     for candidate in candidates:
         path = os.path.expanduser(candidate)
         print(path)
@@ -120,16 +120,16 @@ def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01,
         pad = p3.pad.Pad(pad_path)
         char = charSwitcher.get(charString)(agent, pad, agentOptions)
 
-        args = []
-        if platform.system() == "Darwin":
-            args = ['/usr/bin/open', '-n', '-a' '/Applications/Dolphin.app', '-e', '/Users/lucasteixeira/Dolphin Games/Super Smash Bros. Melee (v1.02).iso']
-        elif platform.system() == "Linux":
-            args = ['dolphin-emu', '-e', '/home/prilo/DolphinGames/Super Smash Bros. Melee (v1.02).iso']
-        else:
-            sys.exit("Platform not recognized:")
-        # process = subprocess.run(['/usr/bin/open', '-n', '-a' '/Applications/Dolphin.app', '-e', '/Users/lucasteixeira/Dolphin Games/Super Smash Bros. Melee (v1.02).iso'], check=True)
-        process = subprocess.Popen(args)
-        dolphinPid = process.pid
+        # args = []
+        # if platform.system() == "Darwin":
+        #     args = ['/usr/bin/open', '-n', '-a' '/Applications/Dolphin.app', '-e', '/Users/lucasteixeira/Dolphin Games/Super Smash Bros. Melee (v1.02).iso']
+        # elif platform.system() == "Linux":
+        #     args = ['dolphin-emu', '-e', '/home/prilo/DolphinGames/Super Smash Bros. Melee (v1.02).iso']
+        # else:
+        #     sys.exit("Platform not recognized:")
+        # # process = subprocess.run(['/usr/bin/open', '-n', '-a' '/Applications/Dolphin.app', '-e', '/Users/lucasteixeira/Dolphin Games/Super Smash Bros. Melee (v1.02).iso'], check=True)
+        # process = subprocess.Popen(args)
+        # dolphinPid = process.pid
 
         if selfSelect:
             pad_enemy_path = dolphin_dir + '/Pipes/p2'
