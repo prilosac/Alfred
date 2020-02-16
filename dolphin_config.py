@@ -7,7 +7,6 @@ $Netplay Community Settings
 """
 
 pipe_config = """
-Device = Pipe/1/p2
 Buttons/A = `Button A`
 Buttons/B = `Button B`
 Buttons/X = `Button X`
@@ -40,9 +39,9 @@ Triggers/R-Analog = `Axis R +`
 
 def set_config(dolphin_dir):
     config_dir = dolphin_dir + '/Config'
-    with open(config_dir + 'GCPadNew.ini', 'w') as f:
+    with open(config_dir + '/GCPadNew.ini', 'w') as f:
         config_1 = "[GCPad1]\n"
-        config_1 += "Device = Pipe/1/p2\n"
+        config_1 += "Device = Pipe/1/p2"
         config_1 += pipe_config
         config_3 = "[GCPad3]\n"
         config_3 += "Device = Pipe/0/p3"
