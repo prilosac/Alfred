@@ -55,7 +55,7 @@ def set_config(dolphin_dir):
         os.makedirs(pipes_dir)
     with open(config_dir + '/GCPadNew.ini', 'w') as f:
         config_1 = "[GCPad1]\n"
-        config_1 += "Device = Pipe/1/p2"
+        config_1 += "Device = Pipe/0/p2"
         config_1 += pipe_config
         config_3 = "[GCPad3]\n"
         config_3 += "Device = Pipe/0/p3"
