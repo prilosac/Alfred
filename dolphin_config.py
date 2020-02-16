@@ -1,4 +1,5 @@
 import platform
+import os.path as path
 
 gale01_ini = """
 [Gecko_Enabled]
@@ -56,6 +57,10 @@ def set_config(dolphin_dir):
     elif platform.system() == "Linux":
         # game_dir = '/home/prilo/DolphinGames/Super Smash Bros. Melee (v1.02).iso'
         game_dir = '/home/prilo/DolphinGames/'
+
+    if not path.exists(config_dir + '/Dolphin.ini'):
+        dolphin_ini_init = open(config_dir + '/Dolphin.ini', 'w')
+        dolphin_ini_init.close
 
     with open(config_dir + '/Dolphin.ini', 'r') as f:
         dolphin_ini = f.read()
