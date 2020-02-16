@@ -37,7 +37,7 @@ class QLearningAgent:
 
         if model != "nosave" and path.exists("models/"+model):
             self.policyNet.load_state_dict(torch.load("models/" + model))
-            print(self.policyNet.state_dict())
+            # print(self.policyNet.state_dict())
 
         self.targetNet.load_state_dict(self.policyNet.state_dict())
         self.targetNet.eval()
@@ -83,7 +83,7 @@ class QLearningAgent:
         # print(torch.unsqueeze(state, 2))
         # print("=================")
         # print(state)
-        print("   -----------   ")
+        # print("   -----------   ")
         policyAns = self.policyNet(torch.unsqueeze(state, 2))
         self.policyNet.train(mode=True)
 
