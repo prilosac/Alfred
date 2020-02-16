@@ -85,11 +85,11 @@ def start(default, headless):
         args = ['/usr/bin/open', '-n', '-a' '/Applications/Dolphin.app', '-e', '/Users/lucasteixeira/Dolphin Games/Super Smash Bros. Melee (v1.02).iso']
     elif platform.system() == "Linux":
         if default:
-            args = ['dolphin-emu', '-e', '~/DolphinGames/Super Smash Bros. Melee (v1.02).iso']
+            args = ['dolphin-emu', '-e', path.expanduser('~/DolphinGames/Super Smash Bros. Melee (v1.02).iso')]
         elif headless:
-            args = ['~/dolphin-emu-nogui/build/Binaries/dolphin-emu-nogui', '-e', '~/DolphinGames/Super Smash Bros. Melee (v1.02).iso', '-u', '~/dolphin-emu-nogui/build/Binaries/Sys']
+            args = [path.expanduser('~/dolphin-emu-nogui/build/Binaries/dolphin-emu-nogui'), '-e', path.expanduser('~/DolphinGames/Super Smash Bros. Melee (v1.02).iso'), '-u', path.expanduser('~/dolphin-emu-nogui/build/Binaries/Sys')]
         elif not headless:
-            args = ['~/dolphin-test/build/Binaries/dolphin-emu', '-e', '~/DolphinGames/Super Smash Bros. Melee (v1.02).iso', '-u', '~/dolphin-test/build/Binaries/Sys']
+            args = [path.expanduser('~/dolphin-test/build/Binaries/dolphin-emu'), '-e', path.expanduser('~/DolphinGames/Super Smash Bros. Melee (v1.02).iso'), '-u', path.expanduser('~/dolphin-test/build/Binaries/Sys')]
 
     else:
         sys.exit("Platform not recognized:")
