@@ -26,4 +26,4 @@ if args.__contains__('-h') or args.__contains__('--headless'):
 # CharString, Agent, Learning Rate, Discount Rate,
 # Exploration Rate, Exploration Discount, Model
 # Min Exploration Rate
-p3.main("Yoshi", "Q", lr=0.1, dr=0.95, er=1.0, ed=20000, emin=0.01, model="2-11-2020-Adam", learn=learn, selfSelect=False, level=9, default=default, headless=headless)
+p3.main("Yoshi", "Q", lr=0.1, dr=0.95, er=1.0, ed=20000, emin=0.01, model="2-11-2020-Adam", learn=learn, selfSelect=True, level=9, default=default, headless=headless)
