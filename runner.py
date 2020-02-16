@@ -3,7 +3,7 @@
 # import chars.yoshi as yoshi
 import p3.p3 as p3
 # from agents import qLearningAgents as qla
-import sys, platform, subprocess
+import sys, platform
 from dolphin import set_config, start
 
 learn = True

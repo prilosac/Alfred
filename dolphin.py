@@ -1,6 +1,6 @@
 import platform
 import os.path as path
-import os
+import os, subprocess
 
 gale01_ini = """
 [Gecko_Enabled]
