@@ -3,12 +3,17 @@
 # import chars.yoshi as yoshi
 import p3.p3 as p3
 # from agents import qLearningAgents as qla
-import sys
+import sys, platform
+import dolphin_config
 
 learn = True
 args = sys.argv[1:]
 if args.__contains__('-p') or args.__contains__('--play'):
     learn = False
+
+if platform.system() == "Linux":
+    dolphin_dir = p3.find_dolphin_dir()
+    dolphin_config(dolphin_dir)
 
 # CharString, Agent, Learning Rate, Discount Rate,
 # Exploration Rate, Exploration Discount, Model
