@@ -134,7 +134,7 @@ def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01,
 
         time.sleep(5)
         start(default, headless)
-        time.sleep(5)
+        time.sleep(0.5)
 
         if selfSelect:
             pad_enemy_path = dolphin_dir + '/Pipes/p2'
