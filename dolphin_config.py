@@ -57,10 +57,10 @@ def set_config(dolphin_dir):
         # game_dir = '/home/prilo/DolphinGames/Super Smash Bros. Melee (v1.02).iso'
         game_dir = '/home/prilo/DolphinGames/'
 
-    with open(configDir + '/Dolphin.ini', 'r') as f:
+    with open(config_dir + '/Dolphin.ini', 'r') as f:
         dolphin_ini = f.read()
 
-    with open(configDir + '/Dolphin.ini', 'w') as f:
+    with open(config_dir + '/Dolphin.ini', 'w') as f:
       config_args = dict(
         iso_path=game_dir,
       )
