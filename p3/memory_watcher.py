@@ -19,7 +19,8 @@ class MemoryWatcher:
 
     def __enter__(self):
         self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
-        self.sock.settimeout(0.001)
+        # self.sock.settimeout(0.001)
+        self.sock.settimeout(1)
         self.sock.bind(self.path)
         return self
 
