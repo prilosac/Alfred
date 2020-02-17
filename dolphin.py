@@ -100,7 +100,8 @@ def start(default, headless):
         elif headless:
             args = [path.expanduser('~/dolphin-emu-nogui/build/Binaries/dolphin-emu-nogui'), '-e', path.expanduser('~/DolphinGames/Super Smash Bros. Melee (v1.02).iso'), '-u', path.expanduser('~/dolphin-emu-nogui/build/Binaries/Sys')]
         elif not headless:
-            args = [path.expanduser('~/dolphin-test/build/Binaries/dolphin-emu'), '-e', path.expanduser('~/DolphinGames/Super Smash Bros. Melee (v1.02).iso'), '-u', path.expanduser('~/dolphin-test/build/Binaries/Sys')]
+            # args = [path.expanduser('~/dolphin-test/build/Binaries/dolphin-emu'), '-e', path.expanduser('~/DolphinGames/Super Smash Bros. Melee (v1.02).iso'), '-u', path.expanduser('~/dolphin-test/build/Binaries/Sys')]
+            args = [path.expanduser('~/dolphin-test/build/Binaries/dolphin-emu'), '-u', path.expanduser('~/dolphin-test/build/Binaries/Sys')]
 
     else:
         sys.exit("Platform not recognized:")
