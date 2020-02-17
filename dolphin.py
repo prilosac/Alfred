@@ -106,5 +106,5 @@ def start(default, headless):
     else:
         sys.exit("Platform not recognized:")
     # process = subprocess.run(['/usr/bin/open', '-n', '-a' '/Applications/Dolphin.app', '-e', '/Users/lucasteixeira/Dolphin Games/Super Smash Bros. Melee (v1.02).iso'], check=True)
-    process = subprocess.Popen(args)
+    return subprocess.Popen(args)
     dolphinPid = process.pid
