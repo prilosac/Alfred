@@ -44,7 +44,8 @@ Triggers/R-Analog = `Axis R +`
 """
 
 def set_config(dolphin_dir):
-    config_dir = dolphin_dir + '/Config'
+    config_dir = '~./config/dolphin-emu'
+    # config_dir = dolphin_dir + '/Config'
     if not path.exists(config_dir):
         os.makedirs(config_dir)
     mw_dir = dolphin_dir + '/MemoryWatcher'
@@ -98,10 +99,11 @@ def start(default, headless):
         if default:
             args = ['dolphin-emu', '-e', path.expanduser('~/DolphinGames/Super Smash Bros. Melee (v1.02).iso')]
         elif headless:
-            args = [path.expanduser('~/dolphin-emu-nogui/build/Binaries/dolphin-emu-nogui'), '-e', path.expanduser('~/DolphinGames/Super Smash Bros. Melee (v1.02).iso'), '-u', path.expanduser('~/dolphin-emu-nogui/build/Binaries/Sys')]
+            args = [path.expanduser('~/dolphin-emu-nogui/build/Binaries/dolphin-emu-nogui'), '-e', path.expanduser('~/DolphinGames/Super Smash Bros. Melee (v1.02).iso')]
+            # args = [path.expanduser('~/dolphin-emu-nogui/build/Binaries/dolphin-emu-nogui'), '-e', path.expanduser('~/DolphinGames/Super Smash Bros. Melee (v1.02).iso'), '-u', path.expanduser('~/dolphin-emu-nogui/build/Binaries/Sys')]
         elif not headless:
-            # args = [path.expanduser('~/dolphin-test/build/Binaries/dolphin-emu'), '-e', path.expanduser('~/DolphinGames/Super Smash Bros. Melee (v1.02).iso'), '-u', path.expanduser('~/dolphin-test/build/Binaries/Sys')]
-            args = [path.expanduser('~/dolphin-test/build/Binaries/dolphin-emu'), '-u', path.expanduser('~/dolphin-test/build/Binaries/Sys'), '-e', path.expanduser('~/DolphinGames/Super Smash Bros. Melee (v1.02).iso')]
+            args = [path.expanduser('~/dolphin-test/build/Binaries/dolphin-emu'), '-e', path.expanduser('~/DolphinGames/Super Smash Bros. Melee (v1.02).iso')]
+            # args = [path.expanduser('~/dolphin-test/build/Binaries/dolphin-emu'), '-u', path.expanduser('~/dolphin-test/build/Binaries/Sys'), '-e', path.expanduser('~/DolphinGames/Super Smash Bros. Melee (v1.02).iso')]
 
     else:
         sys.exit("Platform not recognized:")
