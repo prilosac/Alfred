@@ -133,8 +133,8 @@ def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01,
         # dolphinPid = process.pid
 
         time.sleep(1)
-        print(default, headless)
-        # start(default, headless)
+        # print(default, headless)
+        start(default, headless)
         # time.sleep(12)
 
         if selfSelect:
