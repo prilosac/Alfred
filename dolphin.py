@@ -44,7 +44,7 @@ Triggers/R-Analog = `Axis R +`
 """
 
 def set_config(dolphin_dir):
-    config_dir = '~./config/dolphin-emu'
+    config_dir = path.expanduser()'~/.config/dolphin-emu')
     # config_dir = dolphin_dir + '/Config'
     if not path.exists(config_dir):
         os.makedirs(config_dir)
