@@ -150,6 +150,7 @@ def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01,
                     last_frame = state.frame
                     res_e = next(mw_e)
                     if res_e is not None:
+                        # print(res_e)
                         sm.handle(*res_e)
                     if state.frame > last_frame:
                         if not char_enemy.bot_level_set:

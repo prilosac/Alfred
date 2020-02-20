@@ -128,9 +128,15 @@ class QLearningAgent:
         # print("% 1  |  Stock 1  |  % 3  |  Stock 3" )
         # print(p1p, p1s, p3p, p3s)
 
+        # don't punish the same death more than once
+        # just because it occurs over multiple frames
+        # don't reward the same kill more than once 
+        # just because it occurs over multiple frames
         if self.lastObs is not None:
             if util.isDying(newState.players[2]) and not util.isDying(self.lastObs.players[2]):
                 ans -= 1.0
+            if util.isDying(newState.players[0]) and not util.isDying(self.lastObs.players[0]):
+                ans += 1.0
 
         
         # if(newState.players[2].__dict__['action_state'] == state.ActionState.Guard):
