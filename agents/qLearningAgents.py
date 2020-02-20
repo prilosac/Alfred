@@ -47,6 +47,8 @@ class QLearningAgent:
         self.optimizer = optim.Adam(self.policyNet.parameters(), self.learningRate)
         self.memory = ReplayMemory(1000)
 
+        self.lastObs = None
+
     def getAction(self, state):
         if(random.random() <= self.explorationRate):
             # print("random")
@@ -119,21 +121,25 @@ class QLearningAgent:
         p1p = newState.players[0].__dict__['percent'] - oldState.players[0].__dict__['percent']
         p3s = oldState.players[2].__dict__['stocks'] - newState.players[2].__dict__['stocks']
         p1s = oldState.players[0].__dict__['stocks'] - newState.players[0].__dict__['stocks']
-        ans = (p1s-p3s) + (0.0075*(p1p) - 0.0075*(p3p))
+        # ans = (p1s-p3s) + (0.0075*(p1p) - 0.0075*(p3p))
+        ans = (0.0075*(p1p) - 0.0075*(p3p))
+
         # print(newState.players[2].__dict__['percent'], oldState.players[2].__dict__['percent'], newState.players[0].__dict__['percent'], oldState.players[0].__dict__['percent'], oldState.players[2].__dict__['stocks'], newState.players[2].__dict__['stocks'], oldState.players[0].__dict__['stocks'], newState.players[0].__dict__['stocks'], " | oldFrame: ", oldState.frame, " | newFrame: ", newState.frame)
         # print("% 1  |  Stock 1  |  % 3  |  Stock 3" )
         # print(p1p, p1s, p3p, p3s)
 
-        # if pThreeStockDiff > 0 or pOneStockDiff > 0:
-        #     ans = pOneStockDiff - pThreeStockDiff
-        # else:
-        #     ans = 0.05*pOnePercentDiff - 0.05*pThreePercentDiff
+        if self.lastObs is not None:
+            if util.isDying(newState.players[2]) and not util.isDying(self.lastObs.players[2]):
+                ans -= 1.0
+
         
         # if(newState.players[2].__dict__['action_state'] == state.ActionState.Guard):
         #         ans -= 5
         return ans
 
     def update(self, oldState, newState, actionIndex):
+        self.lastObs = newState
+        
         action = self.actions[actionIndex]
 
         # qState = self.getStateRep(oldState)

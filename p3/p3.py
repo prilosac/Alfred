@@ -19,7 +19,7 @@ from dolphin import start
 
 def find_dolphin_dir():
     """Attempts to find the dolphin user directory. None on failure."""
-    candidates = ['~/.dolphin-emu', '~/.local/share/.dolphin-emu', '~/.local/share/dolphin-emu', '~/Library/Application Support/Dolphin', '~/dolphin-test/build/Binaries/Sys', '~/dolphin-emu-nogui/build/Binaries/Sys']
+    candidates = ['~/.dolphin-emu', '~/.local/share/.dolphin-emu', '~/.local/share/dolphin-emu', '~/Library/Application Support/Dolphin', '~/dolphin-test/build/Binaries/Sys', '~/dolphin-gurvan/build/Binaries/Sys']
     # candidates = ['~/dolphin-test/build/Binaries/Sys', '~/dolphin-emu-nogui/build/Binaries/Sys']
     for candidate in candidates:
         path = os.path.expanduser(candidate)
