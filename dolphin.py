@@ -82,7 +82,7 @@ def set_config(dolphin_dir):
     with open(config_dir + '/Dolphin.ini', 'w') as f:
       config_args = dict(
         iso_path = game_dir,
-        gfx_backend = "Null"
+        # gfx_backend = "Null"
       )
       f.write(dolphin_ini.format(**config_args))
 
