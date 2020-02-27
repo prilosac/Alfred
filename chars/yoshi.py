@@ -68,6 +68,8 @@ class Yoshi:
         # if(state.frame % 200 == 0):
                 # self.printState(state)
         # self.printState(state)
+        if state.frame > self.last_action:
+            self.agent.rewardMemory.push(copy.deepcopy(state))
         while self.action_list:
             wait, func, args = self.action_list[0]
             if state.frame - self.last_action < wait:
@@ -89,7 +91,7 @@ class Yoshi:
             #     self.wavedash(pad)
             # print(self.agent.getAction(state))
             qState = self.agent.getStateRep(state)
-            
+
             if self.learn:
                 self.agent.update(self.lastState, state, self.lastAction)
                 nextAction = self.agent.getAction(qState)

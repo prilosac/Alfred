@@ -4,6 +4,7 @@ from collections import namedtuple
 from math import exp
 import numpy as np
 import util
+import copy
 from agents.deepQNetwork import DQN, ReplayMemory
 import torch.optim as optim
 import torch
@@ -47,7 +48,8 @@ class QLearningAgent:
         self.optimizer = optim.Adam(self.policyNet.parameters(), self.learningRate)
         self.memory = ReplayMemory(1000)
 
-        self.lastObs = None
+        # self.lastObs = None
+        self.rewardMemory = util.StateMemory(12)
 
     def getAction(self, state):
         if(random.random() <= self.explorationRate):
@@ -86,12 +88,16 @@ class QLearningAgent:
         # print("=================")
         # print(state)
         # print("   -----------   ")
+
+        # print(torch.unsqueeze(state, 2).shape)
+        # print(torch.stack(self.predictMemory.memory, dim=2).shape)
         policyAns = self.policyNet(torch.unsqueeze(state, 2))
+        # policyAns = self.policyNet(torch.stack(self.predictMemory.memory, dim=2))
         self.policyNet.train(mode=True)
 
         # print(policyAns)
         # print(policyAns.max(1))
-        print(policyAns.max(1)[1])
+        # print(policyAns.max(1)[1])
         # print(policyAns.max(1)[1].view(1, 1).item())
 
         return policyAns.max(1)[1].view(1, 1).item()
@@ -114,9 +120,14 @@ class QLearningAgent:
         # return np.amax([self.getQValue(state, action) for action in self.actions])
         return max([self.getQValue(state, action) for action in self.actions])        
 
-    def getReward(self, oldState, newState):
-        # print(newState.players[2].__dict__)
-        # TODO: Make this calculate reward with old and new state
+    # def getReward(self, oldState, newState):
+    def getReward(self):
+        newState = self.rewardMemory.last()
+        oldState = self.rewardMemory.first()
+        # print([i.frame for i in self.rewardMemory.memory])
+        # print("Reward over frames ", oldState.frame, " - ", newState.frame)
+        # print(len(self.rewardMemory))
+
         p3p = newState.players[2].__dict__['percent'] - oldState.players[2].__dict__['percent']
         p1p = newState.players[0].__dict__['percent'] - oldState.players[0].__dict__['percent']
         p3s = oldState.players[2].__dict__['stocks'] - newState.players[2].__dict__['stocks']
@@ -132,11 +143,25 @@ class QLearningAgent:
         # just because it occurs over multiple frames
         # don't reward the same kill more than once 
         # just because it occurs over multiple frames
-        if self.lastObs is not None:
-            if util.isDying(newState.players[2]) and not util.isDying(self.lastObs.players[2]):
-                ans -= 1.0
-            if util.isDying(newState.players[0]) and not util.isDying(self.lastObs.players[0]):
-                ans += 1.0
+        if self.rewardMemory.died(2):
+            ans -= 1.0
+        if self.rewardMemory.died(0):
+            ans += 1.0
+
+        # deathCheckState = self.rewardMemory.deathCheck()
+        # if deathCheckState is not None:
+        #     # print("checking death")
+        #     if util.isDying(newState.players[2]) and not util.isDying(deathCheckState.players[2]):
+        #         print("punishing death")
+        #         ans -= 1.0
+        #     if util.isDying(newState.players[0]) and not util.isDying(deathCheckState.players[0]):
+        #         ans += 1.0
+
+        # if self.lastObs is not None:
+        #     if util.isDying(newState.players[2]) and not util.isDying(self.lastObs.players[2]):
+        #         ans -= 1.0
+        #     if util.isDying(newState.players[0]) and not util.isDying(self.lastObs.players[0]):
+        #         ans += 1.0
 
         
         # if(newState.players[2].__dict__['action_state'] == state.ActionState.Guard):
@@ -144,7 +169,8 @@ class QLearningAgent:
         return ans
 
     def update(self, oldState, newState, actionIndex):
-        self.lastObs = newState
+        # self.lastObs = newState
+        # self.rewardMemory.push(copy.deepcopy(newState))
         
         action = self.actions[actionIndex]
 
@@ -155,7 +181,8 @@ class QLearningAgent:
         # if(key not in self.QValues.keys()):
         #     self.QValues[(qState, tuple(action))] = 0
 
-        reward = self.getReward(oldState, newState)
+        # reward = self.getReward(oldState, newState)
+        reward = self.getReward()
         reward = torch.tensor([reward], device=self.device)
 
         # Store the transition in memory
@@ -166,8 +193,8 @@ class QLearningAgent:
 
         # if newState.frame % 500 == 0:
         #     self.printStocks(newState)
-        # if(reward != 0.0):
-        #     print("Reward: ", reward)
+        if(reward != 0.0):
+            print("Reward: ", reward)
 
         # sample = reward + self.discountRate*self.getValue(newState)
 
@@ -212,10 +239,12 @@ class QLearningAgent:
     #     self.session.run(self.optimizer, feed_dict=training_data)
 
     def optimize_model(self):
-        # print(len(self.memory))
-        if len(self.memory) < BATCH_SIZE:
+        
+        if self.memory.position % BATCH_SIZE != 0 or len(self.memory) < BATCH_SIZE:
             return
-        # print("running optimization")
+        # if len(self.memory) < BATCH_SIZE:
+        #     return
+        print("running optimization")
         transitions = self.memory.sample(BATCH_SIZE)
         # Transpose the batch (see https://stackoverflow.com/a/19343/3343043 for
         # detailed explanation). This converts batch-array of Transitions
@@ -234,8 +263,6 @@ class QLearningAgent:
         # Compute Q(s_t, a) - the model computes Q(s_t), then we select the
         # columns of actions taken. These are the actions which would've been taken
         # for each batch state according to policy_net
-        # print(action_batch.size())
-        # print(torch.unsqueeze(state_batch, 2).size())
         state_action_values = self.policyNet(torch.unsqueeze(state_batch, 2)).gather(1, torch.unsqueeze(action_batch, 1))
 
         # Compute V(s_{t+1}) for all next states.
@@ -244,10 +271,8 @@ class QLearningAgent:
         # This is merged based on the mask, such that we'll have either the expected
         # state value or 0 in case the state was final.
         next_state_values = torch.zeros(BATCH_SIZE, device=self.device, dtype=torch.double)
-        # print(non_final_next_states.type())
         next_state_values[non_final_mask] = self.targetNet(torch.unsqueeze(non_final_next_states, 2)).max(1)[0].detach()
         # Compute the expected Q values
-        # print(reward_batch.type())
         expected_state_action_values = (next_state_values * self.discountRate) + reward_batch
 
         # Compute Huber loss
@@ -257,8 +282,6 @@ class QLearningAgent:
         self.optimizer.zero_grad()
         loss.backward()
         for param in self.policyNet.parameters():
-            # print(param)
-            # print(param.grad)
             if param.grad is not None:
                 param.grad.data.clamp_(-1, 1)
             else:
