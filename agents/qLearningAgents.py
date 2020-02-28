@@ -193,8 +193,8 @@ class QLearningAgent:
 
         # if newState.frame % 500 == 0:
         #     self.printStocks(newState)
-        if(reward != 0.0):
-            print("Reward: ", reward)
+        # if(reward != 0.0):
+        #     print("Reward: ", reward)
 
         # sample = reward + self.discountRate*self.getValue(newState)
 
