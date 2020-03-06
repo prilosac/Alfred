@@ -95,12 +95,15 @@ class QLearningAgent:
         # policyAns = self.policyNet(torch.stack(self.predictMemory.memory, dim=2))
         self.policyNet.train(mode=True)
 
-        # print(policyAns)
+        # print(policyAns.shape)
         # print(policyAns.max(1))
-        # print(policyAns.max(1)[1])
+        # print(policyAns.max(1)[1].shape)
         # print(policyAns.max(1)[1].view(1, 1).item())
-
-        return policyAns.max(1)[1].view(1, 1).item()
+        # print(torch.squeeze(policyAns))
+        # print(torch.sum(torch.squeeze(policyAns)))
+        # print(np.random.choice(self.actions, p=torch.squeeze(policyAns.detach())))
+        return self.actions.index(np.random.choice(self.actions, p=torch.squeeze(policyAns.detach())))
+        # return policyAns.max(1)[1].view(1, 1).item()
 
         # return self.actions[self.policyNet(torch.tensor(list(state))).max(1)[1].view(1, 1)]
 

@@ -2,6 +2,7 @@ import p3.pad
 import math
 import copy
 import torch
+import numpy as np
 from p3.state import ActionState
 
 class Yoshi:
@@ -101,6 +102,11 @@ class Yoshi:
             # print(nextAction)
             self.lastState = copy.deepcopy(state)
             self.lastAction = nextAction
+            # if isinstance(nextAction, int):
+            #     self.addAction(self.possibleActions[nextAction], pad)
+            # else:
+            #     print(nextAction.detach())
+            #     self.addAction(np.random.choice(self.possibleActions, p=nextAction.detach()), pad)
             self.addAction(self.possibleActions[nextAction], pad)
 
     def addAction(self, action, pad):

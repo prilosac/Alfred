@@ -27,3 +27,4 @@ if platform.system() == "Linux":
 # Exploration Rate, Exploration Discount, Model
 # Min Exploration Rate
 p3.main("Yoshi", "Q", lr=0.1, dr=0.95, er=1.0, ed=20000, emin=0.01, model="2-22-2020-MultipleFramesTest", learn=learn, selfSelect=True, level=9, default=default, headless=headless)
+# p3.main("Yoshi", "Q", lr=0.1, dr=0.95, er=1.0, ed=20000, emin=0.01, model="nosave", learn=learn, selfSelect=True, level=9, default=default, headless=headless)

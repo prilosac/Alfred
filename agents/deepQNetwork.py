@@ -67,7 +67,8 @@ class DQN(nn.Module):
         x = F.relu(self.bn3(self.conv3(x)))
         # return x
         # print(x)
-        return self.head(x.view(x.size(0), -1))
+        # print(x)
+        return nn.Softmax(dim=1)(self.head(x.view(x.size(0), -1)))
 
 
 
