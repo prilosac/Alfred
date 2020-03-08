@@ -49,12 +49,12 @@ class StateMemory(object):
 
 def isDying(player):
     # print("dying!")
-    print(player.__dict__['action_state'].value, " is")
-    if player.__dict__['action_state'].value <= 0xA:
-        print("less than")
-    else:
-        print("larger than")
-    print("0xA")
+    # print(player.__dict__['action_state'].value, " is")
+    # if player.__dict__['action_state'].value <= 0xA:
+    #     print("less than")
+    # else:
+    #     print("larger than")
+    # print("0xA")
     return player.__dict__['action_state'].value <= 0xA
 
 def chunk(l, n):

@@ -9,7 +9,7 @@ from agents.deepQNetwork import DQN, ReplayMemory
 import torch.optim as optim
 import torch
 import torch.nn.functional as F
-import p3.state as state
+import p3.state as p3state
 
 Transition = namedtuple('Transition',
                         ('state', 'action', 'next_state', 'reward'))
@@ -185,6 +185,7 @@ class QLearningAgent:
         #     self.QValues[(qState, tuple(action))] = 0
 
         # reward = self.getReward(oldState, newState)
+        self.predictFuture(newState, 5)
         reward = self.getReward()
         reward = torch.tensor([reward], device=self.device)
 
@@ -336,3 +337,56 @@ class QLearningAgent:
         qState = torch.unsqueeze(torch.tensor(list(qState), dtype=torch.float64, device=self.device), 0)
         qState = F.normalize(qState)
         return qState
+
+    def predictFuture(self, state, frames):
+        # p1/p3 - Player 1 / Player 3
+        # v - Velocity
+        # air - Air
+        # att - Attack
+        # pos - Position
+        if frames <= 0:
+            return
+
+        predictedState = copy.deepcopy(state)
+        p1airvx = state.players[0].__dict__['self_air_vel_x']
+        p1airvy = state.players[0].__dict__['self_air_vel_y']
+        p1attvx = state.players[0].__dict__['attack_vel_x']
+        p1attvy = state.players[0].__dict__['attack_vel_y']
+        p1posx = state.players[0].__dict__['pos_x']
+        p1posy = state.players[0].__dict__['pos_y']
+
+        p3airvx = state.players[2].__dict__['self_air_vel_x']
+        p3airvy = state.players[2].__dict__['self_air_vel_y']
+        p3attvx = state.players[2].__dict__['attack_vel_x']
+        p3attvy = state.players[2].__dict__['attack_vel_y']
+        p3posx = state.players[2].__dict__['pos_x']
+        p3posy = state.players[2].__dict__['pos_y']
+
+        if p3posy < 0.0:
+            predictedState.players[2].__dict__['stocks'] = np.max(predictedState.players[2].__dict__['stocks']-1, 0)
+            predictedState.players[2].__dict__['action_state'] = p3state.ActionState.DeadDown
+        predictedState.players[2].__dict__['pos_x'] += (p3airvx + p3attvx)*2
+        predictedState.players[2].__dict__['pos_y'] += (p3airvy + p3attvy)*2
+
+        if p1posy < 0.0:
+            predictedState.players[0].__dict__['stocks'] = np.max(predictedState.players[0].__dict__['stocks']-1, 0)
+            predictedState.players[0].__dict__['action_state'] = p3state.ActionState.DeadDown
+        predictedState.players[0].__dict__['pos_x'] += (p1airvx + p1attvx)*2
+        predictedState.players[0].__dict__['pos_y'] += (p1airvy + p1attvy)*2
+
+        self.rewardMemory.push(predictedState)
+        self.predictFuture(predictedState, frames-1)
+
+        # print("----------------------------------")
+        # print(predictedState.players[2].__dict__)
+        # print(state.players[2].__dict__)
+        # print("Falco")
+        # print("x: ", state.players[0].__dict__['pos_x'], " y: ", state.players[0].__dict__['pos_y'])
+        # print("self_air_vel_x: ", state.players[0].__dict__['self_air_vel_x'], " self_air_vel_y: ", state.players[0].__dict__['self_air_vel_y'])
+        # print("attack_vel_x: ", state.players[0].__dict__['attack_vel_x'], " attack_vel_y: ", state.players[0].__dict__['attack_vel_y'])
+        # print("Yoshi")
+        # print("x: ", state.players[2].__dict__['pos_x'], " y: ", state.players[2].__dict__['pos_y'])
+        # print("self_air_vel_x: ", state.players[2].__dict__['self_air_vel_x'], " self_air_vel_y: ", state.players[2].__dict__['self_air_vel_y'])
+        # print("attack_vel_x: ", state.players[2].__dict__['attack_vel_x'], " attack_vel_y: ", state.players[2].__dict__['attack_vel_y'])
+
+        # return
