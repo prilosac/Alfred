@@ -102,11 +102,6 @@ class Yoshi:
             # print(nextAction)
             self.lastState = copy.deepcopy(state)
             self.lastAction = nextAction
-            # if isinstance(nextAction, int):
-            #     self.addAction(self.possibleActions[nextAction], pad)
-            # else:
-            #     print(nextAction.detach())
-            #     self.addAction(np.random.choice(self.possibleActions, p=nextAction.detach()), pad)
             self.addAction(self.possibleActions[nextAction], pad)
 
     def addAction(self, action, pad):

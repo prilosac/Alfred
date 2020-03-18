@@ -27,6 +27,8 @@ class QLearningAgent:
         self.explorationRate = explorationRate
         self.explorationDecay = explorationDecay
         self.explorationRateMin = explorationRateMin
+        self.predictionFrames = 120
+        
 
         # self.QValues = util.myDict()
 
@@ -49,7 +51,7 @@ class QLearningAgent:
         self.memory = ReplayMemory(1000)
 
         # self.lastObs = None
-        self.rewardMemory = util.StateMemory(12)
+        self.rewardMemory = util.StateMemory(self.predictionFrames*2)
 
     def getAction(self, state):
         if(random.random() <= self.explorationRate):
@@ -185,7 +187,7 @@ class QLearningAgent:
         #     self.QValues[(qState, tuple(action))] = 0
 
         # reward = self.getReward(oldState, newState)
-        self.predictFuture(newState, 5)
+        self.predictFuture(newState, self.predictionFrames)
         reward = self.getReward()
         reward = torch.tensor([reward], device=self.device)
 
