@@ -14,7 +14,7 @@ import p3.state as p3state
 Transition = namedtuple('Transition',
                         ('state', 'action', 'next_state', 'reward'))
 
-BATCH_SIZE = 100
+BATCH_SIZE = 20
 
 class QLearningAgent:
     def __init__(self, charActions, learningRate=0.1, discountRate=0.95, explorationRate=1.0, explorationDecay=0.0005, explorationRateMin=0.01, model="nosave"):
@@ -33,9 +33,9 @@ class QLearningAgent:
         # self.QValues = util.myDict()
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.policyNet = DQN(13, len(self.actions)).to(self.device)
+        self.policyNet = DQN(15, len(self.actions)).to(self.device)
         self.policyNet = self.policyNet.double()
-        self.targetNet = DQN(13, len(self.actions)).to(self.device)
+        self.targetNet = DQN(15, len(self.actions)).to(self.device)
         self.targetNet = self.targetNet.double()
 
         if model != "nosave" and path.exists("models/"+model):
@@ -85,25 +85,14 @@ class QLearningAgent:
 
         # Exit training mode to get an answer based on policy, then return to training mode\
         self.policyNet.train(mode=False)
-        # policyAns = self.policyNet(torch.unsqueeze(torch.unsqueeze(torch.tensor(list(state), dtype=torch.double), 1), 0))#.max(1)[1].view(1, 1)
-        # print(torch.unsqueeze(state, 2))
-        # print("=================")
-        # print(state)
-        # print("   -----------   ")
-
-        # print(torch.unsqueeze(state, 2).shape)
-        # print(torch.stack(self.predictMemory.memory, dim=2).shape)
         policyAns = self.policyNet(torch.unsqueeze(state, 2))
         # policyAns = self.policyNet(torch.stack(self.predictMemory.memory, dim=2))
         self.policyNet.train(mode=True)
 
-        # print(policyAns.shape)
-        # print(policyAns.max(1))
-        # print(policyAns.max(1)[1].shape)
-        # print(policyAns.max(1)[1].view(1, 1).item())
-        # print(torch.squeeze(policyAns))
-        # print(torch.sum(torch.squeeze(policyAns)))
         # print(np.random.choice(self.actions, p=torch.squeeze(policyAns.detach())))
+
+        # print(torch.squeeze(policyAns))
+        # print(policyAns.max(1)[1].view(1, 1).item(), torch.squeeze(policyAns)[policyAns.max(1)[1].view(1, 1).item()])
         return self.actions.index(np.random.choice(self.actions, p=torch.squeeze(policyAns.detach())))
         # return policyAns.max(1)[1].view(1, 1).item()
 
@@ -152,22 +141,6 @@ class QLearningAgent:
             ans -= 1.0
         if self.rewardMemory.died(0):
             ans += 1.0
-
-        # deathCheckState = self.rewardMemory.deathCheck()
-        # if deathCheckState is not None:
-        #     # print("checking death")
-        #     if util.isDying(newState.players[2]) and not util.isDying(deathCheckState.players[2]):
-        #         print("punishing death")
-        #         ans -= 1.0
-        #     if util.isDying(newState.players[0]) and not util.isDying(deathCheckState.players[0]):
-        #         ans += 1.0
-
-        # if self.lastObs is not None:
-        #     if util.isDying(newState.players[2]) and not util.isDying(self.lastObs.players[2]):
-        #         ans -= 1.0
-        #     if util.isDying(newState.players[0]) and not util.isDying(self.lastObs.players[0]):
-        #         ans += 1.0
-
         
         # if(newState.players[2].__dict__['action_state'] == state.ActionState.Guard):
         #         ans -= 5
@@ -328,16 +301,27 @@ class QLearningAgent:
             state.players[0].__dict__['cursor_y'],
             state.players[0].__dict__['pos_x'],
             state.players[0].__dict__['pos_y'],
+            state.players[0].__dict__['action_state'].value,
             state.players[2].__dict__['stocks'],
             state.players[2].__dict__['percent'],
             state.players[2].__dict__['cursor_x'],
             state.players[2].__dict__['cursor_y'],
             state.players[2].__dict__['pos_x'],
             state.players[2].__dict__['pos_y'],
+            state.players[0].__dict__['action_state'].value,
             state.__dict__['stage'].value,
         )
         qState = torch.unsqueeze(torch.tensor(list(qState), dtype=torch.float64, device=self.device), 0)
-        qState = F.normalize(qState)
+        # qState = F.normalize(qState)
+        # print(qState)
+        m = qState.mean(1, keepdim=True)
+        s = qState.std(1, unbiased=False, keepdim=True)
+        # print(m)
+        # print(s)
+        qState -= m
+        qState /= s
+        # print(qState)
+        # print("------------------")
         return qState
 
     def predictFuture(self, state, frames):

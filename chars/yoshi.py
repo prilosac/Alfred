@@ -98,6 +98,7 @@ class Yoshi:
                 nextAction = self.agent.getAction(qState)
             else:
                 nextAction = self.agent.policy(qState)
+                # print(nextAction)
             # nextAction = self.agent.getAction(qState)
             # print(nextAction)
             self.lastState = copy.deepcopy(state)
