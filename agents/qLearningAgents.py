@@ -14,7 +14,7 @@ import p3.state as p3state
 Transition = namedtuple('Transition',
                         ('state', 'action', 'next_state', 'reward'))
 
-BATCH_SIZE = 20
+BATCH_SIZE = 100
 
 class QLearningAgent:
     def __init__(self, charActions, learningRate=0.1, discountRate=0.95, explorationRate=1.0, explorationDecay=0.0005, explorationRateMin=0.01, model="nosave"):
@@ -255,8 +255,8 @@ class QLearningAgent:
         expected_state_action_values = (next_state_values * self.discountRate) + reward_batch
 
         # Compute Huber loss
-        print(state_action_values.shape)
-        print(expected_state_action_values.unsqueeze(1).shape)
+        # print(state_action_values.shape)
+        # print(expected_state_action_values.unsqueeze(1).shape)
         loss = F.smooth_l1_loss(state_action_values, expected_state_action_values.unsqueeze(1))
 
         # Optimize the model
