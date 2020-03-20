@@ -255,6 +255,8 @@ class QLearningAgent:
         expected_state_action_values = (next_state_values * self.discountRate) + reward_batch
 
         # Compute Huber loss
+        print(state_action_values.shape)
+        print(expected_state_action_values.unsqueeze(1).shape)
         loss = F.smooth_l1_loss(state_action_values, expected_state_action_values.unsqueeze(1))
 
         # Optimize the model
@@ -262,6 +264,7 @@ class QLearningAgent:
         loss.backward()
         for param in self.policyNet.parameters():
             if param.grad is not None:
+                # print(param.grad)
                 param.grad.data.clamp_(-1, 1)
             else:
                 continue
@@ -312,7 +315,7 @@ class QLearningAgent:
             state.__dict__['stage'].value,
         )
         qState = torch.unsqueeze(torch.tensor(list(qState), dtype=torch.float64, device=self.device), 0)
-        # qState = F.normalize(qState)
+        qState = F.normalize(qState)
         # print(qState)
         m = qState.mean(1, keepdim=True)
         s = qState.std(1, unbiased=False, keepdim=True)

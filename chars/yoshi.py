@@ -31,6 +31,7 @@ class Yoshi:
         # self.lastAction = ['(1, None, [])']
         self.lastAction = 0
         self.selected = False
+        self.stageSelected = False
 
         self.agent = agent(self.possibleActions, agentOptions['learningRate'], agentOptions['discountRate'], agentOptions['explorationRate'], agentOptions['explorationDecay'], agentOptions['explorationRateMin'], agentOptions['model'])
 
@@ -64,7 +65,7 @@ class Yoshi:
                 pad.tilt_stick(p3.pad.Stick.MAIN, 0.5, 0.5)
             else:
                 pad.tilt_stick(p3.pad.Stick.MAIN, 0.5 * (dx / mag) + 0.5, 0.5 * (dy / mag) + 0.5)
-
+    
     def advance(self, state, pad):
         # if(state.frame % 200 == 0):
                 # self.printState(state)
