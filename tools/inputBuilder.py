@@ -84,13 +84,25 @@ def createStickInputs():
         for i in range(6):
             y = 0.0
             for j in range(6):
-                currInput = "(0, pad.tilt_stick, [p3.pad.{}, {}, {}])".format(stick, x, y)
+                currX, currY = x, y
+                if y <= 0.5:
+                    v = numpy.array([x, y])
+                    norm = numpy.linalg.norm(v)
+                    if norm != 0:
+                        v_hat = v / numpy.linalg.norm(v)
+                        currX, currY = v_hat[0], v_hat[1]
+                        # print(currX, currY)
+                currInput = "(0, pad.tilt_stick, [p3.pad.{}, {}, {}])".format(stick, format(currX, '0.3f'), format(currY, '0.3f'))
                 # currNullInput = "(1, pad.tilt_stick, [p3.pad.{}, {}, {}])".format(stick, 0.5, 0.5)
+                print(currInput)
                 currNullInput = "(2, pad.reset, [])"
 
                 y += 0.2
-                # ans.append(currInput)
-                ans.append([currInput, currNullInput])
+
+                currAns = [currInput, currNullInput]
+                if currAns not in ans:
+                    ans.append([currInput, currNullInput])
+                    # ans.append(currInput)
             x += 0.2
             
     ans.append('(1, None, [])')

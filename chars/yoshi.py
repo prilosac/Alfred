@@ -10,7 +10,7 @@ class Yoshi:
         self.possibleActions = []
         self.learn = agentOptions['learn']
 
-        with open("inputs/test3.txt", "r") as inputs:
+        with open("inputs/testnorm.txt", "r") as inputs:
             lines = inputs.readlines()
             for line in lines:
                 self.possibleActions.append(eval(line))
@@ -87,6 +87,10 @@ class Yoshi:
         else:
             if (state.frame - self.last_action) < 3:
                 return
+            offstage, side = self.ifOffStage(state)
+            if offstage:
+                self.recover(side, pad)
+                return
             # Eventually this will point at some decision-making thing.
             # self.utilt(pad)
             # if(state.players[2].__dict__['action_state'] == ActionState.Wait):
@@ -126,6 +130,19 @@ class Yoshi:
         self.action_list.append((0, pad.press_button, [p3.pad.Button.L]))
         self.action_list.append((1, pad.release_button, [p3.pad.Button.L]))
         self.action_list.append((1, pad.tilt_stick, [p3.pad.Stick.MAIN, 0.5, 0.5]))
+        self.action_list.append((1, None, []))
+
+    def ifOffStage(self, state):
+        side = math.copysign(1.0, state.players[2].__dict__['pos_x'])
+        offstage =  math.fabs(state.players[2].__dict__['pos_x']) > 69.72
+        return offstage, side
+    
+    def recover(self, side, pad):
+        driftDir = -0.3*side
+        self.action_list.append((0, pad.press_button, [p3.pad.Button.Y]))
+        self.action_list.append((1, pad.release_button, [p3.pad.Button.Y]))
+        self.action_list.append((1, pad.tilt_stick, [p3.pad.Stick.MAIN, 0.5+driftDir, 0.7]))
+        self.action_list.append((8, pad.tilt_stick, [p3.pad.Stick.MAIN, 0.5, 0.5]))
         self.action_list.append((1, None, []))
 
     def printState(self, state):

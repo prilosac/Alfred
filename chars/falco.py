@@ -10,7 +10,7 @@ class Falco:
         self.possibleActions = []
         self.learn = agentOptions['learn']
 
-        with open("inputs/test3.txt", "r") as inputs:
+        with open("inputs/testnorm.txt", "r") as inputs:
             lines = inputs.readlines()
             for line in lines:
                 self.possibleActions.append(eval(line))

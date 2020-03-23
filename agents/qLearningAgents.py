@@ -189,7 +189,7 @@ class QLearningAgent:
                 self.explorationRateMin) * \
                     exp(-1. * newState.frame / self.explorationDecay)
             # print(newState.frame)    
-            # print(self.explorationRate)
+            print(self.explorationRate)
         
         
         # Perform one step of the optimization (on the target network)
