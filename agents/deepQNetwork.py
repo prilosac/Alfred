@@ -40,10 +40,13 @@ class DQN(nn.Module):
     def __init__(self, inputs, outputs):
         super(DQN, self).__init__()
         # self.conv1 = nn.Conv2d(13, 16, kernel_size=5, stride=2)
+        self.dropout1 = nn.Dropout(p=0.75)
         self.conv1 = nn.Conv1d(inputs, 16, kernel_size=1, stride=1, padding=0)
         self.bn1 = nn.BatchNorm1d(16)
+        self.dropout2 = nn.Dropout(p=0.75)
         self.conv2 = nn.Conv1d(16, 32, kernel_size=1, stride=1)
         self.bn2 = nn.BatchNorm1d(32)
+        self.dropout3 = nn.Dropout(p=0.75)
         self.conv3 = nn.Conv1d(32, 32, kernel_size=1, stride=1)
         self.bn3 = nn.BatchNorm1d(32)
 
@@ -61,10 +64,10 @@ class DQN(nn.Module):
 
     def forward(self, x):
         # print(x)
-        x = F.relu(self.bn1(self.conv1(x)))
+        x = F.relu(self.bn1(self.conv1(self.dropout1(x))))
         # x = F.relu(self.conv1(x))
-        x = F.relu(self.bn2(self.conv2(x)))
-        x = F.relu(self.bn3(self.conv3(x)))
+        x = F.relu(self.bn2(self.conv2(self.dropout2(x))))
+        x = F.relu(self.bn3(self.conv3(self.dropout3(x))))
         # return x
         # print(x)
         # print(x)

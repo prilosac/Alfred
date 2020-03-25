@@ -14,7 +14,7 @@ import p3.state as p3state
 Transition = namedtuple('Transition',
                         ('state', 'action', 'next_state', 'reward'))
 
-BATCH_SIZE = 100
+BATCH_SIZE = 20
 
 class QLearningAgent:
     def __init__(self, charActions, learningRate=0.1, discountRate=0.95, explorationRate=1.0, explorationDecay=0.0005, explorationRateMin=0.01, model="nosave"):
@@ -49,6 +49,7 @@ class QLearningAgent:
         # self.optimizer = optim.RMSprop(self.policyNet.parameters(), lr=self.learningRate, weight_decay=2)
         self.optimizer = optim.Adam(self.policyNet.parameters(), self.learningRate)
         self.memory = ReplayMemory(1000)
+        # self.memory = ReplayMemory(120)
 
         # self.lastObs = None
         self.rewardMemory = util.StateMemory(self.predictionFrames*2)
@@ -92,7 +93,7 @@ class QLearningAgent:
         # print(np.random.choice(self.actions, p=torch.squeeze(policyAns.detach())))
 
         # print(torch.squeeze(policyAns))
-        # print(policyAns.max(1)[1].view(1, 1).item(), torch.squeeze(policyAns)[policyAns.max(1)[1].view(1, 1).item()])
+        print(policyAns.max(1)[1].view(1, 1).item(), torch.squeeze(policyAns)[policyAns.max(1)[1].view(1, 1).item()])
         return self.actions.index(np.random.choice(self.actions, p=torch.squeeze(policyAns.detach())))
         # return policyAns.max(1)[1].view(1, 1).item()
 
@@ -189,7 +190,7 @@ class QLearningAgent:
                 self.explorationRateMin) * \
                     exp(-1. * newState.frame / self.explorationDecay)
             # print(newState.frame)    
-            # print(self.explorationRate)
+            print(self.explorationRate)
         
         
         # Perform one step of the optimization (on the target network)
