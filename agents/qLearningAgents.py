@@ -93,7 +93,7 @@ class QLearningAgent:
         # print(np.random.choice(self.actions, p=torch.squeeze(policyAns.detach())))
 
         # print(torch.squeeze(policyAns))
-        print(policyAns.max(1)[1].view(1, 1).item(), torch.squeeze(policyAns)[policyAns.max(1)[1].view(1, 1).item()])
+        # print(policyAns.max(1)[1].view(1, 1).item(), torch.squeeze(policyAns)[policyAns.max(1)[1].view(1, 1).item()])
         return self.actions.index(np.random.choice(self.actions, p=torch.squeeze(policyAns.detach())))
         # return policyAns.max(1)[1].view(1, 1).item()
 
