@@ -14,7 +14,7 @@ import p3.state as p3state
 Transition = namedtuple('Transition',
                         ('state', 'action', 'next_state', 'reward'))
 
-BATCH_SIZE = 20
+BATCH_SIZE = 100
 
 class QLearningAgent:
     def __init__(self, charActions, learningRate=0.1, discountRate=0.95, explorationRate=1.0, explorationDecay=0.0005, explorationRateMin=0.01, model="nosave"):
@@ -38,7 +38,7 @@ class QLearningAgent:
         self.targetNet = DQN(15, len(self.actions)).to(self.device)
         self.targetNet = self.targetNet.double()
 
-        if model != "nosave" and path.exists("models/"+model):
+        if model != "nosave" and model != "test" and path.exists("models/"+model):
             self.policyNet.load_state_dict(torch.load("models/" + model))
             # print(self.policyNet.state_dict())
 
@@ -70,35 +70,27 @@ class QLearningAgent:
 
     def policy(self, state):
         # print("policy")
-        # return (1, None, [])
-        # ans = [None, -float("inf")]
-        # for action in self.actions:
-        #     tempQVal = self.getQValue(state, action)
-        #     if tempQVal >= ans[1]:
-        #         ans[0] = action
-        #         ans[1] = tempQVal
-        # return ans[0]
-        # return the action with the highet Q from the neural net prediction
-        # return self.actions[self.policyNet(torch.squeeze(torch.tensor(list(state)), 0)).max(1)[1].view(1, 1)]
-        # return self.actions[self.policyNet(torch.unsqueeze(torch.tensor(list(state)), 1)).max(1)[1].view(1, 1)]
 
         # print(torch.unsqueeze(torch.unsqueeze(torch.tensor(list(state)), 1), 0))
 
         # Exit training mode to get an answer based on policy, then return to training mode\
         self.policyNet.train(mode=False)
-        policyAns = self.policyNet(torch.unsqueeze(state, 2))
+        # print(state.shape)
+        # predictState = torch.unsqueeze(state, 2)
+        # predictState = torch.cat([torch.unsqueeze(state, 2), torch.unsqueeze(self.memory.memory[len(self.memory)-1][2], 2), torch.unsqueeze(self.memory.memory[len(self.memory)-2][2], 2)], dim=2)
+        predictState = torch.unsqueeze(torch.cat([state, self.memory.memory[len(self.memory)-1][2], self.memory.memory[len(self.memory)-2][2]]), 2)
+        # print(predictState.shape)
+        # print(predictState)
+        policyAns = self.policyNet(predictState)
         # policyAns = self.policyNet(torch.stack(self.predictMemory.memory, dim=2))
         self.policyNet.train(mode=True)
 
         # print(np.random.choice(self.actions, p=torch.squeeze(policyAns.detach())))
-
-        # print(torch.squeeze(policyAns))
         # print(policyAns.max(1)[1].view(1, 1).item(), torch.squeeze(policyAns)[policyAns.max(1)[1].view(1, 1).item()])
-        return self.actions.index(np.random.choice(self.actions, p=torch.squeeze(policyAns.detach())))
-        # return policyAns.max(1)[1].view(1, 1).item()
-
-        # return self.actions[self.policyNet(torch.tensor(list(state))).max(1)[1].view(1, 1)]
-
+        # print(torch.squeeze(policyAns.detach()).shape)
+        avgPolicyAns = torch.mean(torch.squeeze(policyAns.detach()), 0, keepdim=True)
+        # return self.actions.index(np.random.choice(self.actions, p=torch.squeeze(policyAns.detach())))
+        return self.actions.index(np.random.choice(self.actions, p=torch.squeeze(avgPolicyAns.detach())))
 
      # Ask model to estimate Q value for specific state (inference)
     def getQValue(self, state, action):
@@ -243,6 +235,7 @@ class QLearningAgent:
         # Compute Q(s_t, a) - the model computes Q(s_t), then we select the
         # columns of actions taken. These are the actions which would've been taken
         # for each batch state according to policy_net
+        # print(state_batch.shape)
         state_action_values = self.policyNet(torch.unsqueeze(state_batch, 2)).gather(1, torch.unsqueeze(action_batch, 1))
 
         # Compute V(s_{t+1}) for all next states.
