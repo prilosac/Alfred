@@ -78,9 +78,9 @@ class QLearningAgent:
         # print(state.shape)
         # predictState = torch.unsqueeze(state, 2)
         # predictState = torch.cat([torch.unsqueeze(state, 2), torch.unsqueeze(self.memory.memory[len(self.memory)-1][2], 2), torch.unsqueeze(self.memory.memory[len(self.memory)-2][2], 2)], dim=2)
+
         predictState = torch.unsqueeze(torch.cat([state, self.memory.memory[len(self.memory)-1][2], self.memory.memory[len(self.memory)-2][2]]), 2)
-        # print(predictState.shape)
-        # print(predictState)
+        
         policyAns = self.policyNet(predictState)
         # policyAns = self.policyNet(torch.stack(self.predictMemory.memory, dim=2))
         self.policyNet.train(mode=True)
@@ -90,7 +90,7 @@ class QLearningAgent:
         # print(torch.squeeze(policyAns.detach()).shape)
         avgPolicyAns = torch.mean(torch.squeeze(policyAns.detach()), 0, keepdim=True)
         # return self.actions.index(np.random.choice(self.actions, p=torch.squeeze(policyAns.detach())))
-        return self.actions.index(np.random.choice(self.actions, p=torch.squeeze(avgPolicyAns.detach())))
+        return self.actions.index(np.random.choice(self.actions, p=torch.squeeze(avgPolicyAns)))
 
      # Ask model to estimate Q value for specific state (inference)
     def getQValue(self, state, action):

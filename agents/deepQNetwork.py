@@ -39,18 +39,20 @@ class ReplayMemory(object):
 class DQN(nn.Module):
     def __init__(self, inputs, outputs):
         super(DQN, self).__init__()
+        self.kernelSize = 3
+        self.padding = 1
 
         self.dropout1 = nn.Dropout(p=0.75)
         # self.conv1 = nn.Conv1d(inputs, 16, kernel_size=1, stride=1, padding=0)
-        self.conv1 = nn.Conv1d(inputs, 16, kernel_size=3, stride=1, padding=1)
+        self.conv1 = nn.Conv1d(inputs, 16, kernel_size=self.kernelSize, stride=1, padding=self.padding)
         self.bn1 = nn.BatchNorm1d(16)
         self.dropout2 = nn.Dropout(p=0.75)
         # self.conv2 = nn.Conv1d(16, 32, kernel_size=1, stride=1)
-        self.conv2 = nn.Conv1d(16, 32, kernel_size=3, stride=1, padding=1)
+        self.conv2 = nn.Conv1d(16, 32, kernel_size=self.kernelSize, stride=1, padding=self.padding)
         self.bn2 = nn.BatchNorm1d(32)
         self.dropout3 = nn.Dropout(p=0.75)
         # self.conv3 = nn.Conv1d(32, 32, kernel_size=1, stride=1)
-        self.conv3 = nn.Conv1d(32, 32, kernel_size=3, stride=1, padding=1)
+        self.conv3 = nn.Conv1d(32, 32, kernel_size=self.kernelSize, stride=1, padding=self.padding)
         self.bn3 = nn.BatchNorm1d(32)
 
         # def conv2d_size_out(size, kernel_size = 1, stride = 1):
