@@ -78,8 +78,20 @@ class QLearningAgent:
         # print(state.shape)
         # predictState = torch.unsqueeze(state, 2)
         # predictState = torch.cat([torch.unsqueeze(state, 2), torch.unsqueeze(self.memory.memory[len(self.memory)-1][2], 2), torch.unsqueeze(self.memory.memory[len(self.memory)-2][2], 2)], dim=2)
+        s0 = state
+        s1 = None
+        s2 = None
+        if len(self.memory) < 3:
+            if len(self.memory) < 2:
+                s1 = state
+            else:
+                s1 = self.memory.memory[len(self.memory)-2][2]
+            s2 = state
+        else:
+            s2 = self.memory.memory[len(self.memory)-3][2]
 
-        predictState = torch.unsqueeze(torch.cat([state, self.memory.memory[len(self.memory)-1][2], self.memory.memory[len(self.memory)-2][2]]), 2)
+        # predictState = torch.unsqueeze(torch.cat([state, self.memory.memory[len(self.memory)-1][2], self.memory.memory[len(self.memory)-2][2]]), 2)
+        predictState = torch.unsqueeze(torch.cat([s0, s1, s2]), 2)
         
         policyAns = self.policyNet(predictState)
         # policyAns = self.policyNet(torch.stack(self.predictMemory.memory, dim=2))
