@@ -37,10 +37,10 @@ class ReplayMemory(object):
 # import numpy as np
 
 class DQN(nn.Module):
-    def __init__(self, inputs, outputs):
+    def __init__(self, inputs, outputs, kernelSize):
         super(DQN, self).__init__()
-        self.kernelSize = 3
-        self.padding = 1
+        self.kernelSize = kernelSize
+        self.padding = kernelSize // 2
 
         self.dropout1 = nn.Dropout(p=0.75)
         # self.conv1 = nn.Conv1d(inputs, 16, kernel_size=1, stride=1, padding=0)

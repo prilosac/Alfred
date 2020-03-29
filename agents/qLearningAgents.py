@@ -28,14 +28,15 @@ class QLearningAgent:
         self.explorationDecay = explorationDecay
         self.explorationRateMin = explorationRateMin
         self.predictionFrames = 120
+        self.kernelSize = 7
         
 
         # self.QValues = util.myDict()
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.policyNet = DQN(15, len(self.actions)).to(self.device)
+        self.policyNet = DQN(15, len(self.actions), self.kernelSize).to(self.device)
         self.policyNet = self.policyNet.double()
-        self.targetNet = DQN(15, len(self.actions)).to(self.device)
+        self.targetNet = DQN(15, len(self.actions), self.kernelSize).to(self.device)
         self.targetNet = self.targetNet.double()
 
         if model != "nosave" and model != "test" and path.exists("models/"+model):
@@ -75,29 +76,27 @@ class QLearningAgent:
 
         # Exit training mode to get an answer based on policy, then return to training mode\
         self.policyNet.train(mode=False)
-        # print(state.shape)
-        # predictState = torch.unsqueeze(state, 2)
-        # predictState = torch.cat([torch.unsqueeze(state, 2), torch.unsqueeze(self.memory.memory[len(self.memory)-1][2], 2), torch.unsqueeze(self.memory.memory[len(self.memory)-2][2], 2)], dim=2)
-        s0 = state
-        s1 = copy.deepcopy(state)
-        s2 = copy.deepcopy(state)
-        if len(self.memory) >= 2:
-            s1 = self.memory.memory[len(self.memory)-2][2]
-            if len(self.memory) >= 3:
-                s2 = self.memory.memory[len(self.memory)-3][2]
 
-        # predictState = torch.unsqueeze(torch.cat([state, self.memory.memory[len(self.memory)-1][2], self.memory.memory[len(self.memory)-2][2]]), 2)
-        predictState = torch.unsqueeze(torch.cat([s0, s1, s2]), 2)
-        
+        states = [state]
+        for i in range(self.kernelSize-1):
+            # index will be one less than size, and the last element is just the current state, so add 2 to i to make sure the element exists
+            if len(self.memory) >= (i+2):
+                s = self.memory.memory[len(self.memory)-(i+2)][2]
+                states.append(s)
+            else:
+                state.append(copy.deepcopy(state))
+
+        predictState = torch.unsqueeze(torch.cat(states), 2)
         policyAns = self.policyNet(predictState)
-        # policyAns = self.policyNet(torch.stack(self.predictMemory.memory, dim=2))
+
         self.policyNet.train(mode=True)
 
-        # print(np.random.choice(self.actions, p=torch.squeeze(policyAns.detach())))
         # print(policyAns.max(1)[1].view(1, 1).item(), torch.squeeze(policyAns)[policyAns.max(1)[1].view(1, 1).item()])
         # print(torch.squeeze(policyAns.detach()).shape)
-        avgPolicyAns = torch.mean(torch.squeeze(policyAns.detach()), 0, keepdim=True)
+
+        avgPolicyAns = torch.mean(policyAns.detach(), 0, keepdim=True)
         # return self.actions.index(np.random.choice(self.actions, p=torch.squeeze(policyAns.detach())))
+
         return self.actions.index(np.random.choice(self.actions, p=torch.squeeze(avgPolicyAns)))
 
      # Ask model to estimate Q value for specific state (inference)
