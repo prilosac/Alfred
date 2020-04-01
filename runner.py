@@ -26,5 +26,5 @@ if platform.system() == "Linux":
 # CharString, Agent, Learning Rate, Discount Rate,
 # Exploration Rate, Exploration Discount, Model
 # Min Exploration Rate
-p3.main("Yoshi", "Q", lr=0.1, dr=0.95, er=1.0, ed=200000, emin=0.02, model="3-29-2020-7Kernel", learn=learn, selfSelect=True, level=9, default=default, headless=headless)
+p3.main("Yoshi", "Q", lr=0.1, dr=0.95, er=1.0, ed=200000, emin=0.02, model="3-29-2020-7Kernel-2", learn=learn, selfSelect=True, level=9, default=default, headless=headless)
 # p3.main("Yoshi", "Q", lr=0.1, dr=0.95, er=1.0, ed=20000, emin=0.02, model="test", learn=learn, selfSelect=True, level=9, default=default, headless=headless)

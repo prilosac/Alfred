@@ -84,7 +84,7 @@ class QLearningAgent:
                 s = self.memory.memory[len(self.memory)-(i+2)][2]
                 states.append(s)
             else:
-                state.append(copy.deepcopy(state))
+                states.append(copy.deepcopy(state))
 
         predictState = torch.unsqueeze(torch.cat(states), 2)
         policyAns = self.policyNet(predictState)
