@@ -28,7 +28,7 @@ class QLearningAgent:
         self.explorationDecay = explorationDecay
         self.explorationRateMin = explorationRateMin
         self.predictionFrames = 120
-        self.kernelSize = 7
+        self.kernelSize = 1
         
 
         # self.QValues = util.myDict()
@@ -97,7 +97,12 @@ class QLearningAgent:
         avgPolicyAns = torch.mean(policyAns.detach(), 0, keepdim=True)
         # return self.actions.index(np.random.choice(self.actions, p=torch.squeeze(policyAns.detach())))
 
-        return self.actions.index(np.random.choice(self.actions, p=torch.squeeze(avgPolicyAns)))
+        # print(avgPolicyAns.max(1)[1].view(1, 1).item(), torch.squeeze(avgPolicyAns)[avgPolicyAns.max(1)[1].view(1, 1).item()])
+        # print(self.actions.index(np.random.choice(self.actions, p=torch.squeeze(avgPolicyAns).detach().numpy())))
+        # print(torch.squeeze(avgPolicyAns))
+        # print(self.actions.shape)
+        # print(torch.squeeze(avgPolicyAns).detach().numpy().shape)
+        return self.actions.index(np.random.choice(self.actions, p=torch.squeeze(avgPolicyAns).detach().numpy()))
 
      # Ask model to estimate Q value for specific state (inference)
     def getQValue(self, state, action):
@@ -223,7 +228,7 @@ class QLearningAgent:
             return
         # if len(self.memory) < BATCH_SIZE:
         #     return
-        print("running optimization")
+        # print("running optimization")
         transitions = self.memory.sample(BATCH_SIZE)
         # Transpose the batch (see https://stackoverflow.com/a/19343/3343043 for
         # detailed explanation). This converts batch-array of Transitions

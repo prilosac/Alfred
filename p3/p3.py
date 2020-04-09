@@ -17,6 +17,9 @@ import agents.qLearningAgents
 import torch
 from dolphin import start
 
+startTime = 0
+runTime = 5400 # 1.5 hours
+
 def find_dolphin_dir():
     """Attempts to find the dolphin user directory. None on failure."""
     candidates = ['~/.dolphin-emu', '~/.local/share/.dolphin-emu', '~/.local/share/dolphin-emu', '~/Library/Application Support/Dolphin']
@@ -43,6 +46,8 @@ def write_locations(dolphin_dir, locations):
 def run(char, state, sm, mw, pad, stats):
     mm = p3.menu_manager.MenuManager()
     while True:
+        if time.time() > startTime + runTime:
+            raise KeyboardInterrupt
         last_frame = state.frame
         res = next(mw)
         if res is not None:
@@ -80,6 +85,7 @@ def make_action(state, pad, mm, char):
         # mm.press_start_lots(state, pad)
 
 def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01, model="nosave", learn=True, selfSelect=False, selfChar="Falco", level=9, default=True, headless=False):
+    startTime = time.time()
     dolphin_dir = find_dolphin_dir()
     if dolphin_dir is None:
         print('Could not find dolphin config dir.')
