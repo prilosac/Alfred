@@ -57,6 +57,7 @@ def run(char, state, sm, mw, pad, stats):
             start = time.time()
             make_action(state, pad, mm, char)
             stats.add_thinking_time(time.time() - start)
+            # stats.add_metrics(state)
 
 def make_action(state, pad, mm, char):
     if state.menu == p3.state.Menu.Game:
