@@ -52,14 +52,14 @@ class DQN(nn.Module):
         self.bn2 = nn.BatchNorm1d(32)
         self.dropout3 = nn.Dropout(p=0.90)
         # self.conv3 = nn.Conv1d(32, 32, kernel_size=1, stride=1)
-        self.conv3 = nn.Conv1d(32, 32, kernel_size=self.kernelSize, stride=1, padding=self.padding)
-        self.bn3 = nn.BatchNorm1d(32)
+        self.conv3 = nn.Conv1d(32, 64, kernel_size=self.kernelSize, stride=1, padding=self.padding)
+        self.bn3 = nn.BatchNorm1d(64)
 
         # def conv2d_size_out(size, kernel_size = 1, stride = 1):
         #     return (size - (kernel_size - 1) - 1) // stride  + 1
         # convw = conv2d_size_out(conv2d_size_out(conv2d_size_out(inputs)))
         # linear_input_size = convw * 32
-        self.head = nn.Linear(32, outputs)
+        self.head = nn.Linear(64, outputs)
 
         # self.to(device)
 
