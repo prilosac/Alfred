@@ -58,6 +58,7 @@ def run(char, state, sm, mw, pad, stats):
             make_action(state, pad, mm, char)
             stats.add_thinking_time(time.time() - start)
             stats.add_metrics(state)
+            
 
 def make_action(state, pad, mm, char):
     if state.menu == p3.state.Menu.Game:
@@ -181,6 +182,8 @@ def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01,
         #     # print(process.wait(timeout=30))
         #     print(process.communicate())
         print('Stopped')
+        stats.save_row_results(model)
+        stats.save_readable_results(model)
         print(stats)
         if(model != "nosave" and learn):
             torch.save(char.agent.policyNet.state_dict(), "models/" + model)

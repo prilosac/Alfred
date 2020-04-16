@@ -1,5 +1,6 @@
 import p3.state
 import copy
+import os
 
 class Stats:
     def __init__(self):
@@ -41,6 +42,45 @@ class Stats:
              'Top 5 Most Popular Action States',
              '--------------------------------',
              '{} | {} | {} | {} | {}'.format(p3.state.ActionState(action_states[0]), p3.state.ActionState(action_states[1]), p3.state.ActionState(action_states[2]), p3.state.ActionState(action_states[3]), p3.state.ActionState(action_states[4]))])
+
+    def save_readable_results(self, model):
+        prefix = '--------------------------------------------------------\n' + model + '\n--------------------------------------------------------\n'
+        suffix = '\n\n\n'
+        result = str(self)
+
+        filemode = 'w'
+        if os.path.exists('./results.txt'):
+            filemode = 'a'
+        
+        print(filemode)
+        with open('results.txt', filemode) as f:
+            f.writelines([prefix, result, suffix])
+            f.close
+    
+    def save_row_results(self, model):
+        # defined as follows
+        # model | stocks taken | stocks lost | damage done | damage recieved | games won | games lost | avg stocks taken per game | avg stocks lost per game | most popular action state | second most popular | third most popular | fourth most popular | fifth most popular
+
+        action_states = []
+        for i in range(5):
+            if len(self.states) >= (i+1):
+                key = max(self.states, key=lambda key: self.states[key])
+                action_states.append(key)
+                self.states.pop(key)
+
+        ans = str(self.stocks_taken) + ' ' + str(self.stocks_lost) + ' ' + '{:.2f}'.format(self.damage_done) + ' ' + '{:.2f}'.format(self.damage_recieved) + ' ' + str(self.games_won) + ' ' + str(self.games_lost) + ' ' + '{:.2f}'.format(self.get_average_stocks_taken_game()) + ' ' +  '{:.2f}'.format(self.get_average_stocks_lost_game()) + ' ' + hex(action_states[0]) + ' ' + hex(action_states[1]) + ' ' + hex(action_states[2]) + ' ' + hex(action_states[3]) + ' ' + hex(action_states[4]) + '\n'
+        
+        # str(p3.state.ActionState(action_states[0])) + ' ' + str(p3.state.ActionState(action_states[1])) + ' ' + str(p3.state.ActionState(action_states[2])) + ' ' + str(p3.state.ActionState(action_states[3])) + ' ' + str(p3.state.ActionState(action_states[4])) + '\n'
+
+        filemode = 'w'
+        if os.path.exists('./resultsMatrix.txt'):
+            filemode = 'a'
+        
+        print(filemode)
+        with open('resultsMatrix.txt', filemode) as f:
+            f.write(ans)
+            f.close
+
 
     def add_frames(self, frames):
         self.total_frames += frames
@@ -105,10 +145,12 @@ class Stats:
             self.game_stocks_lost = 0
 
     def get_average_stocks_taken_game(self):
-        return self.stocks_taken / (self.games_won + self.games_lost)
+        total_games = self.games_won + self.games_lost
+        return self.stocks_taken / total_games if total_games else self.stocks_taken
     
     def get_average_stocks_lost_game(self):
-        return self.stocks_lost / (self.games_won + self.games_lost)
+        total_games = self.games_won + self.games_lost
+        return self.stocks_lost / total_games if total_games else self.stocks_lost
 
     def track_action_states(self, state):
         curr_action_state = state.players[2].__dict__['action_state'].value
