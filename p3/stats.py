@@ -68,7 +68,7 @@ class Stats:
                 action_states.append(key)
                 self.states.pop(key)
 
-        ans = str(self.stocks_taken) + ' ' + str(self.stocks_lost) + ' ' + '{:.2f}'.format(self.damage_done) + ' ' + '{:.2f}'.format(self.damage_recieved) + ' ' + str(self.games_won) + ' ' + str(self.games_lost) + ' ' + '{:.2f}'.format(self.get_average_stocks_taken_game()) + ' ' +  '{:.2f}'.format(self.get_average_stocks_lost_game()) + ' ' + hex(action_states[0]) + ' ' + hex(action_states[1]) + ' ' + hex(action_states[2]) + ' ' + hex(action_states[3]) + ' ' + hex(action_states[4]) + '\n'
+        ans = model + ' ' + str(self.stocks_taken) + ' ' + str(self.stocks_lost) + ' ' + '{:.2f}'.format(self.damage_done) + ' ' + '{:.2f}'.format(self.damage_recieved) + ' ' + str(self.games_won) + ' ' + str(self.games_lost) + ' ' + '{:.2f}'.format(self.get_average_stocks_taken_game()) + ' ' +  '{:.2f}'.format(self.get_average_stocks_lost_game()) + ' ' + hex(action_states[0]) + ' ' + hex(action_states[1]) + ' ' + hex(action_states[2]) + ' ' + hex(action_states[3]) + ' ' + hex(action_states[4]) + '\n'
         
         # str(p3.state.ActionState(action_states[0])) + ' ' + str(p3.state.ActionState(action_states[1])) + ' ' + str(p3.state.ActionState(action_states[2])) + ' ' + str(p3.state.ActionState(action_states[3])) + ' ' + str(p3.state.ActionState(action_states[4])) + '\n'
 
