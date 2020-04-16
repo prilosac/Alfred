@@ -18,7 +18,7 @@ import torch
 from dolphin import start
 
 startTime = time.time()
-runTime = 5400 # 1.5 hours
+runTime = 3600 # 1 hour # 5400 # 1.5 hours
 
 def find_dolphin_dir():
     """Attempts to find the dolphin user directory. None on failure."""
@@ -57,7 +57,7 @@ def run(char, state, sm, mw, pad, stats):
             start = time.time()
             make_action(state, pad, mm, char)
             stats.add_thinking_time(time.time() - start)
-            # stats.add_metrics(state)
+            stats.add_metrics(state)
 
 def make_action(state, pad, mm, char):
     if state.menu == p3.state.Menu.Game:
