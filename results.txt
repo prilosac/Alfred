@@ -26,3 +26,5 @@ W/L: 0/23 | 0.00%
 Avg. Stocks Taken Per Game: 1.2608695652173914
 Avg. Stocks Lost Per Game: 4.608695652173913
 Top 5 Most Popular Action States
+--------------------------------
+ActionState.JumpAerialF | ActionState.AttackHi4 | ActionState.AttackAirF | ActionState.AttackAirB | ActionState.AttackAirHi
