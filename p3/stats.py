@@ -136,7 +136,7 @@ class Stats:
         self.damage_recieved += diff
 
     def handle_games(self, state):
-        if self.game_stocks_taken is not 0 and self.game_stocks_lost is not 0:
+        if self.game_stocks_taken is not 0 or self.game_stocks_lost is not 0:
             if self.game_stocks_taken > self.game_stocks_lost:
                 self.games_won += 1
             else:
