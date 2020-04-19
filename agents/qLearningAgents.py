@@ -43,6 +43,11 @@ class QLearningAgent:
             self.policyNet.load_state_dict(torch.load("models/" + model))
             # print(self.policyNet.state_dict())
 
+        # for p1 in zip(self.policyNet.parameters()):
+        #     print(p1)
+        #     print("-------")
+        self.compare_models(self.policyNet, self.policyNet)
+        
         self.targetNet.load_state_dict(self.policyNet.state_dict())
         self.targetNet.eval()
 
@@ -275,6 +280,7 @@ class QLearningAgent:
             else:
                 continue
         self.optimizer.step()
+        self.compare_models(self.policyNet, self.targetNet)
 
     def printState(self, state):
         print("Player 1")
@@ -385,3 +391,18 @@ class QLearningAgent:
         # print("attack_vel_x: ", state.players[2].__dict__['attack_vel_x'], " attack_vel_y: ", state.players[2].__dict__['attack_vel_y'])
 
         # return
+
+    def compare_models(self, model_1, model_2):
+        models_differ = 0
+        for key_item_1, key_item_2 in zip(model_1.state_dict().items(), model_2.state_dict().items()):
+            if torch.allclose(key_item_1[1], key_item_2[1]):
+                pass
+            else:
+                models_differ += 1
+                if (key_item_1[0] == key_item_2[0]):
+                    # print('Mismtach found at', key_item_1[0])
+                    pass
+                else:
+                    raise Exception
+        if models_differ == 0:
+            print('Models match within tolerance!')
