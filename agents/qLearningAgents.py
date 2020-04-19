@@ -46,7 +46,6 @@ class QLearningAgent:
         # for p1 in zip(self.policyNet.parameters()):
         #     print(p1)
         #     print("-------")
-        self.compare_models(self.policyNet, self.policyNet)
         
         self.targetNet.load_state_dict(self.policyNet.state_dict())
         self.targetNet.eval()
