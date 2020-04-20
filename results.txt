@@ -398,3 +398,179 @@ Top 5 Most Popular Action States
 ActionState.DeadDown | ActionState.DamageAir2 | ActionState.DamageFlyN | ActionState.AttackS4S | ActionState.Fall
 
 
+--------------------------------------------------------
+e26
+--------------------------------------------------------
+Total Frames: 214945
+Skipped: 1 | 0.0%
+Average Thinking Time (ms): 0.798804
+Stocks Taken: 24 | 4313.28% Dealt
+Stocks Lost: 107 | 8887.83% Recieved
+W/L: 0/26 | 0.00%
+Avg. Stocks Taken Per Game: 0.9230769230769231
+Avg. Stocks Lost Per Game: 4.115384615384615
+Top 5 Most Popular Action States
+--------------------------------
+ActionState.DamageFlyN | ActionState.DamageAir2 | ActionState.AttackS4S | ActionState.DeadDown | ActionState.Rebirth
+
+
+--------------------------------------------------------
+e27
+--------------------------------------------------------
+Total Frames: 214957
+Skipped: 1 | 0.0%
+Average Thinking Time (ms): 0.829824
+Stocks Taken: 23 | 4335.66% Dealt
+Stocks Lost: 118 | 8188.17% Recieved
+W/L: 0/29 | 0.00%
+Avg. Stocks Taken Per Game: 0.7931034482758621
+Avg. Stocks Lost Per Game: 4.068965517241379
+Top 5 Most Popular Action States
+--------------------------------
+ActionState.DamageAir2 | ActionState.DeadDown | ActionState.DamageFlyN | ActionState.AttackS4S | ActionState.EscapeAir
+
+
+--------------------------------------------------------
+e28
+--------------------------------------------------------
+Total Frames: 214905
+Skipped: 1 | 0.0%
+Average Thinking Time (ms): 0.861230
+Stocks Taken: 23 | 4401.29% Dealt
+Stocks Lost: 118 | 8736.36% Recieved
+W/L: 0/29 | 0.00%
+Avg. Stocks Taken Per Game: 0.7931034482758621
+Avg. Stocks Lost Per Game: 4.068965517241379
+Top 5 Most Popular Action States
+--------------------------------
+ActionState.DamageFlyN | ActionState.DamageAir2 | ActionState.DeadDown | ActionState.EscapeAir | ActionState.Rebirth
+
+
+--------------------------------------------------------
+e29
+--------------------------------------------------------
+Total Frames: 214856
+Skipped: 1 | 0.0%
+Average Thinking Time (ms): 0.907673
+Stocks Taken: 17 | 4486.34% Dealt
+Stocks Lost: 123 | 8441.05% Recieved
+W/L: 0/30 | 0.00%
+Avg. Stocks Taken Per Game: 0.5666666666666667
+Avg. Stocks Lost Per Game: 4.1
+Top 5 Most Popular Action States
+--------------------------------
+ActionState.DamageAir2 | ActionState.DeadDown | ActionState.DamageFlyN | ActionState.Rebirth | ActionState.Fall
+
+
+--------------------------------------------------------
+e30
+--------------------------------------------------------
+Total Frames: 214884
+Skipped: 2 | 0.0%
+Average Thinking Time (ms): 0.950959
+Stocks Taken: 23 | 4569.85% Dealt
+Stocks Lost: 115 | 8996.48% Recieved
+W/L: 0/28 | 0.00%
+Avg. Stocks Taken Per Game: 0.8214285714285714
+Avg. Stocks Lost Per Game: 4.107142857142857
+Top 5 Most Popular Action States
+--------------------------------
+ActionState.DamageFlyN | ActionState.DamageAir2 | ActionState.DeadDown | ActionState.AttackS4S | ActionState.Fall
+
+
+--------------------------------------------------------
+e31
+--------------------------------------------------------
+Total Frames: 214908
+Skipped: 1 | 0.0%
+Average Thinking Time (ms): 0.810493
+Stocks Taken: 25 | 4476.44% Dealt
+Stocks Lost: 118 | 8174.11% Recieved
+W/L: 0/29 | 0.00%
+Avg. Stocks Taken Per Game: 0.8620689655172413
+Avg. Stocks Lost Per Game: 4.068965517241379
+Top 5 Most Popular Action States
+--------------------------------
+ActionState.DeadDown | ActionState.DamageAir2 | ActionState.DamageFlyN | ActionState.AttackS4S | ActionState.Rebirth
+
+
+--------------------------------------------------------
+e32
+--------------------------------------------------------
+Total Frames: 214856
+Skipped: 1 | 0.0%
+Average Thinking Time (ms): 0.940917
+Stocks Taken: 19 | 4250.46% Dealt
+Stocks Lost: 120 | 8307.91% Recieved
+W/L: 0/30 | 0.00%
+Avg. Stocks Taken Per Game: 0.6333333333333333
+Avg. Stocks Lost Per Game: 4.0
+Top 5 Most Popular Action States
+--------------------------------
+ActionState.DamageAir2 | ActionState.DeadDown | ActionState.DamageFlyN | ActionState.AttackS4S | ActionState.Rebirth
+
+
+--------------------------------------------------------
+e33
+--------------------------------------------------------
+Total Frames: 214877
+Skipped: 1 | 0.0%
+Average Thinking Time (ms): 1.064889
+Stocks Taken: 31 | 4860.71% Dealt
+Stocks Lost: 122 | 7898.58% Recieved
+W/L: 0/30 | 0.00%
+Avg. Stocks Taken Per Game: 1.0333333333333334
+Avg. Stocks Lost Per Game: 4.066666666666666
+Top 5 Most Popular Action States
+--------------------------------
+ActionState.DeadDown | ActionState.DamageAir2 | ActionState.DamageFlyN | ActionState.Rebirth | ActionState.Fall
+
+
+--------------------------------------------------------
+e34
+--------------------------------------------------------
+Total Frames: 214889
+Skipped: 1 | 0.0%
+Average Thinking Time (ms): 1.226199
+Stocks Taken: 27 | 4637.22% Dealt
+Stocks Lost: 108 | 8164.31% Recieved
+W/L: 0/27 | 0.00%
+Avg. Stocks Taken Per Game: 1.0
+Avg. Stocks Lost Per Game: 4.0
+Top 5 Most Popular Action States
+--------------------------------
+ActionState.DamageAir2 | ActionState.AttackS4S | ActionState.DeadDown | ActionState.AttackS4Hi | ActionState.DamageFlyN
+
+
+--------------------------------------------------------
+e35
+--------------------------------------------------------
+Total Frames: 214867
+Skipped: 0 | 0.0%
+Average Thinking Time (ms): 1.346809
+Stocks Taken: 20 | 4323.61% Dealt
+Stocks Lost: 112 | 7695.98% Recieved
+W/L: 0/28 | 0.00%
+Avg. Stocks Taken Per Game: 0.7142857142857143
+Avg. Stocks Lost Per Game: 4.0
+Top 5 Most Popular Action States
+--------------------------------
+ActionState.DamageAir2 | ActionState.DeadDown | ActionState.DamageFlyN | ActionState.Rebirth | ActionState.AttackS4S
+
+
+--------------------------------------------------------
+e36
+--------------------------------------------------------
+Total Frames: 214985
+Skipped: 1 | 0.0%
+Average Thinking Time (ms): 1.503646
+Stocks Taken: 28 | 4628.97% Dealt
+Stocks Lost: 123 | 8310.83% Recieved
+W/L: 0/30 | 0.00%
+Avg. Stocks Taken Per Game: 0.9333333333333333
+Avg. Stocks Lost Per Game: 4.1
+Top 5 Most Popular Action States
+--------------------------------
+ActionState.DamageAir2 | ActionState.DeadDown | ActionState.AttackS4S | ActionState.DamageFlyN | ActionState.Rebirth
+
+
