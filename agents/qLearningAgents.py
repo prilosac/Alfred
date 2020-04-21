@@ -28,7 +28,7 @@ class QLearningAgent:
         self.explorationDecay = explorationDecay
         self.explorationRateMin = explorationRateMin
         self.predictionFrames = 120
-        self.kernelSize = 11
+        self.kernelSize = 5
         
 
         # self.QValues = util.myDict()
@@ -38,6 +38,7 @@ class QLearningAgent:
         self.policyNet = self.policyNet.double()
         self.targetNet = DQN(15, len(self.actions), self.kernelSize).to(self.device)
         self.targetNet = self.targetNet.double()
+        self.compareDict = None
 
         if model != "nosave" and model != "test" and path.exists("models/"+model):
             self.policyNet.load_state_dict(torch.load("models/" + model))
@@ -61,7 +62,7 @@ class QLearningAgent:
 
     def getAction(self, state):
         if(random.random() <= self.explorationRate):
-            # print("random")
+            print("random")
             return self.randomAction()
         # print("policy")
         return self.policy(state)
@@ -279,7 +280,11 @@ class QLearningAgent:
             else:
                 continue
         self.optimizer.step()
-        self.compare_models(self.policyNet, self.targetNet)
+
+        # if self.compareDict is not None:
+        #     self.compare_models(self.compareDict, self.policyNet.state_dict())
+        # self.compareDict = copy.deepcopy(self.policyNet.state_dict())
+        # self.compare_models(self.policyNet, self.targetNet)
 
     def printState(self, state):
         print("Player 1")
@@ -393,13 +398,26 @@ class QLearningAgent:
 
     def compare_models(self, model_1, model_2):
         models_differ = 0
-        for key_item_1, key_item_2 in zip(model_1.state_dict().items(), model_2.state_dict().items()):
-            if torch.allclose(key_item_1[1], key_item_2[1]):
+        for key_item_1, key_item_2 in zip(model_1.items(), model_2.items()):
+        # for key_item_1, key_item_2 in zip(model_1.parameters(), model_2.parameters()):
+            # print(key_item_1)
+            # print(key_item_1.grad)
+            # print(key_item_1[0], ' : ', key_item_2[0])
+
+            if not ('weight' in key_item_1[0] and 'weight' in key_item_2[0]):
+                continue
+
+            # print(key_item_1[0], ' : ', key_item_2[0])
+            if torch.allclose(key_item_1[1], key_item_2[1], rtol=1e-03, atol=1e-05):
                 pass
+            # if torch.allclose(key_item_1.grad, key_item_2.grad, rtol=1e-03, atol=1e-05):
+            #     pass
             else:
                 models_differ += 1
+                diff = abs(key_item_1[1] - key_item_2[1])
                 if (key_item_1[0] == key_item_2[0]):
                     # print('Mismtach found at', key_item_1[0])
+                    print('Mismtach of', diff, 'found at', key_item_1[0])
                     pass
                 else:
                     raise Exception
