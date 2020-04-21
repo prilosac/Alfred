@@ -62,7 +62,7 @@ class QLearningAgent:
 
     def getAction(self, state):
         if(random.random() <= self.explorationRate):
-            print("random")
+            # print("random")
             return self.randomAction()
         # print("policy")
         return self.policy(state)
