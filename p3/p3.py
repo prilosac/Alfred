@@ -18,7 +18,7 @@ import torch
 from dolphin import start
 
 startTime = time.time()
-runTime = 5400 # 1 hour # 5400 # 1.5 hours
+runTime = 3600 # 1 hour # 5400 # 1.5 hours
 
 def find_dolphin_dir():
     """Attempts to find the dolphin user directory. None on failure."""

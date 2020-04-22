@@ -28,7 +28,7 @@ class QLearningAgent:
         self.explorationDecay = explorationDecay
         self.explorationRateMin = explorationRateMin
         self.predictionFrames = 120
-        self.kernelSize = 5
+        self.kernelSize = 9
         
 
         # self.QValues = util.myDict()

@@ -606,3 +606,35 @@ Top 5 Most Popular Action States
 ActionState.AttackAirHi | ActionState.DamageAir2 | ActionState.JumpAerialF | ActionState.AttackS4S | ActionState.AttackS4Hi
 
 
+--------------------------------------------------------
+e39
+--------------------------------------------------------
+Total Frames: 214928
+Skipped: 1 | 0.0%
+Average Thinking Time (ms): 1.165647
+Stocks Taken: 12 | 5084.55% Dealt
+Stocks Lost: 209 | 4225.72% Recieved
+W/L: 0/52 | 0.00%
+Avg. Stocks Taken Per Game: 0.23076923076923078
+Avg. Stocks Lost Per Game: 4.019230769230769
+Top 5 Most Popular Action States
+--------------------------------
+ActionState.DamageAir2 | ActionState.AttackAirHi | ActionState.AttackS4S | ActionState.JumpAerialF | ActionState.EscapeAir
+
+
+--------------------------------------------------------
+e40
+--------------------------------------------------------
+Total Frames: 214953
+Skipped: 1 | 0.0%
+Average Thinking Time (ms): 0.925985
+Stocks Taken: 17 | 4941.23% Dealt
+Stocks Lost: 232 | 3190.26% Recieved
+W/L: 0/58 | 0.00%
+Avg. Stocks Taken Per Game: 0.29310344827586204
+Avg. Stocks Lost Per Game: 4.0
+Top 5 Most Popular Action States
+--------------------------------
+ActionState.AttackAirHi | ActionState.DamageAir2 | ActionState.JumpAerialF | ActionState.AttackS4S | ActionState.EscapeAir
+
+
