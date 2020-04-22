@@ -91,7 +91,7 @@ class Yoshi:
             # if offstage:
             #     self.recover(side, pad)
             #     return
-            
+
             # Eventually this will point at some decision-making thing.
             # self.utilt(pad)
             # if(state.players[2].__dict__['action_state'] == ActionState.Wait):

@@ -207,7 +207,11 @@ class QLearningAgent:
 
         # Update the target network, copying all weights and biases in DQN
         if oldState.frame % 100 == 0:
+            # if self.compareDict is not None:
+            #     self.compare_models(self.policyNet.state_dict(), self.targetNet)
+            # self.compare_models(self.policyNet, self.targetNet)
             self.targetNet.load_state_dict(self.policyNet.state_dict())
+            # self.compareDict = copy.deepcopy(self.targetNet.state_dict())
 
     # def train(self, oldState, action, reward, newState):
     #     # Ask the model for the Q values of the old state (inference)
@@ -282,9 +286,12 @@ class QLearningAgent:
         self.optimizer.step()
 
         # if self.compareDict is not None:
+        #     print("Using Copy")
         #     self.compare_models(self.compareDict, self.policyNet.state_dict())
+        
         # self.compareDict = copy.deepcopy(self.policyNet.state_dict())
-        # self.compare_models(self.policyNet, self.targetNet)
+        # print("Using Target")
+        # self.compare_models(self.policyNet.state_dict(), self.targetNet.state_dict())
 
     def printState(self, state):
         print("Player 1")
@@ -408,7 +415,7 @@ class QLearningAgent:
                 continue
 
             # print(key_item_1[0], ' : ', key_item_2[0])
-            if torch.allclose(key_item_1[1], key_item_2[1], rtol=1e-03, atol=1e-05):
+            if torch.allclose(key_item_1[1], key_item_2[1]):
                 pass
             # if torch.allclose(key_item_1.grad, key_item_2.grad, rtol=1e-03, atol=1e-05):
             #     pass
