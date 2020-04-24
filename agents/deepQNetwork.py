@@ -7,7 +7,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 # import torchvision.transforms as T
 
-# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 Transition = namedtuple('Transition',
                         ('state', 'action', 'next_state', 'reward'))
@@ -43,14 +43,17 @@ class DQN(nn.Module):
         self.padding = kernelSize // 2
 
         self.dropout1 = nn.Dropout(p=0.75)
+        # self.dropout1 = nn.Dropout(p=0.4)
         # self.conv1 = nn.Conv1d(inputs, 16, kernel_size=1, stride=1, padding=0)
         self.conv1 = nn.Conv1d(inputs, 16, kernel_size=self.kernelSize, stride=1, padding=self.padding)
         self.bn1 = nn.BatchNorm1d(16)
         self.dropout2 = nn.Dropout(p=0.85)
+        # self.dropout2 = nn.Dropout(p=0.1)
         # self.conv2 = nn.Conv1d(16, 32, kernel_size=1, stride=1)
         self.conv2 = nn.Conv1d(16, 32, kernel_size=self.kernelSize, stride=1, padding=self.padding)
         self.bn2 = nn.BatchNorm1d(32)
         self.dropout3 = nn.Dropout(p=0.90)
+        # self.dropout3 = nn.Dropout(p=0.01)
         # self.conv3 = nn.Conv1d(32, 32, kernel_size=1, stride=1)
         self.conv3 = nn.Conv1d(32, 32, kernel_size=self.kernelSize, stride=1, padding=self.padding)
         self.bn3 = nn.BatchNorm1d(32)
@@ -61,7 +64,7 @@ class DQN(nn.Module):
         # linear_input_size = convw * 32
         self.head = nn.Linear(32, outputs)
 
-        # self.to(device)
+        self.to(device)
 
     # def forward(self, x):
     #     x = F.relu(self.conv1(x))

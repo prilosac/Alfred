@@ -6,6 +6,7 @@ import numpy as np
 import util
 import copy
 from agents.deepQNetwork import DQN, ReplayMemory
+from agents.RNN import RNN
 import torch.optim as optim
 import torch
 import torch.nn.functional as F
@@ -35,8 +36,10 @@ class QLearningAgent:
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.policyNet = DQN(15, len(self.actions), self.kernelSize).to(self.device)
+        # self.policyNet = RNN(15, len(self.actions), hidden_dim=12, n_layers=1).to(self.device)
         self.policyNet = self.policyNet.double()
         self.targetNet = DQN(15, len(self.actions), self.kernelSize).to(self.device)
+        # self.targetNet = RNN(15, len(self.actions), hidden_dim=12, n_layers=1).to(self.device)
         self.targetNet = self.targetNet.double()
         self.compareDict = None
         self.previousModelDelta = {}
@@ -77,7 +80,7 @@ class QLearningAgent:
         return random.randint(0, len(self.actions)-1)
 
     def policy(self, state):
-        print("policy")
+        # print("policy")
 
         # print(torch.unsqueeze(torch.unsqueeze(torch.tensor(list(state)), 1), 0))
 
@@ -206,6 +209,14 @@ class QLearningAgent:
         
         # Perform one step of the optimization (on the target network)
         self.optimize_model()
+
+        filemode = 'w'
+        if path.exists('./explorationRates.txt'):
+            filemode = 'a'
+        
+        with open('explorationRates.txt', filemode) as f:
+            f.write(str(self.explorationRate) + ' ' + str(newState.frame) + '\n')
+            f.close
 
         # Update the target network, copying all weights and biases in DQN
         if oldState.frame % 100 == 0:
@@ -336,7 +347,7 @@ class QLearningAgent:
             state.players[2].__dict__['cursor_y'],
             state.players[2].__dict__['pos_x'],
             state.players[2].__dict__['pos_y'],
-            state.players[0].__dict__['action_state'].value,
+            state.players[2].__dict__['action_state'].value,
             state.__dict__['stage'].value,
         )
         qState = torch.unsqueeze(torch.tensor(list(qState), dtype=torch.float64, device=self.device), 0)
@@ -451,7 +462,6 @@ class QLearningAgent:
         # if path.exists('./weightAverages.txt'):
         #     filemode = 'a'
         
-        # print(filemode)
         # with open('weightAverages.txt', filemode) as f:
         #     f.write(str(runningDelta/runningDeltaCount) + ' ')
         #     f.close
