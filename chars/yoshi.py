@@ -87,10 +87,10 @@ class Yoshi:
         else:
             if (state.frame - self.last_action) < 3:
                 return
-            offstage, side = self.ifOffStage(state)
-            if offstage:
-                self.recover(side, pad)
-                return
+            # offstage, side = self.ifOffStage(state)
+            # if offstage:
+            #     self.recover(side, pad)
+            #     return
 
             # Eventually this will point at some decision-making thing.
             # self.utilt(pad)
