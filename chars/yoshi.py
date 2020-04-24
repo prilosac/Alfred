@@ -87,10 +87,10 @@ class Yoshi:
         else:
             if (state.frame - self.last_action) < 3:
                 return
-            # offstage, side = self.ifOffStage(state)
-            # if offstage:
-            #     self.recover(side, pad)
-            #     return
+            offstage, side = self.ifOffStage(state)
+            if offstage:
+                self.recover(side, pad)
+                return
 
             # Eventually this will point at some decision-making thing.
             # self.utilt(pad)
@@ -103,7 +103,8 @@ class Yoshi:
                 self.agent.update(self.lastState, state, self.lastAction)
                 nextAction = self.agent.getAction(qState)
             else:
-                nextAction = self.agent.policy(qState)
+                # nextAction = self.agent.policy(qState)
+                nextAction = self.agent.randomAction()
                 # print(nextAction)
             # nextAction = self.agent.getAction(qState)
             # print(nextAction)

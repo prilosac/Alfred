@@ -39,6 +39,7 @@ class QLearningAgent:
         self.targetNet = DQN(15, len(self.actions), self.kernelSize).to(self.device)
         self.targetNet = self.targetNet.double()
         self.compareDict = None
+        self.previousModelDelta = {}
 
         if model != "nosave" and model != "test" and path.exists("models/"+model):
             self.policyNet.load_state_dict(torch.load("models/" + model))
@@ -63,6 +64,7 @@ class QLearningAgent:
     def getAction(self, state):
         if(random.random() <= self.explorationRate):
             # print("random")
+            # print(self.explorationRate)
             return self.randomAction()
         # print("policy")
         return self.policy(state)
@@ -75,7 +77,7 @@ class QLearningAgent:
         return random.randint(0, len(self.actions)-1)
 
     def policy(self, state):
-        # print("policy")
+        print("policy")
 
         # print(torch.unsqueeze(torch.unsqueeze(torch.tensor(list(state)), 1), 0))
 
@@ -208,7 +210,7 @@ class QLearningAgent:
         # Update the target network, copying all weights and biases in DQN
         if oldState.frame % 100 == 0:
             # if self.compareDict is not None:
-            #     self.compare_models(self.policyNet.state_dict(), self.targetNet)
+            self.compare_models(self.policyNet.state_dict(), self.targetNet.state_dict())
             # self.compare_models(self.policyNet, self.targetNet)
             self.targetNet.load_state_dict(self.policyNet.state_dict())
             # self.compareDict = copy.deepcopy(self.targetNet.state_dict())
@@ -404,16 +406,21 @@ class QLearningAgent:
         # return
 
     def compare_models(self, model_1, model_2):
+        print('------------------------------')
         models_differ = 0
+        deltas_differ = 0
+        runningDelta = 0
+        runningDeltaCount = 0
         for key_item_1, key_item_2 in zip(model_1.items(), model_2.items()):
-        # for key_item_1, key_item_2 in zip(model_1.parameters(), model_2.parameters()):
-            # print(key_item_1)
-            # print(key_item_1.grad)
-            # print(key_item_1[0], ' : ', key_item_2[0])
-
             if not ('weight' in key_item_1[0] and 'weight' in key_item_2[0]):
                 continue
 
+            diff = abs(key_item_1[1] - key_item_2[1])
+            # print(diff.dim())
+            runningDelta += diff.sum().item()
+            runningDeltaCount += float(diff.numel())
+            # print(diff.numel())
+            # print(diff.sum().item())
             # print(key_item_1[0], ' : ', key_item_2[0])
             if torch.allclose(key_item_1[1], key_item_2[1]):
                 pass
@@ -421,12 +428,35 @@ class QLearningAgent:
             #     pass
             else:
                 models_differ += 1
-                diff = abs(key_item_1[1] - key_item_2[1])
                 if (key_item_1[0] == key_item_2[0]):
-                    # print('Mismtach found at', key_item_1[0])
-                    print('Mismtach of', diff, 'found at', key_item_1[0])
+                    print('Mismtach found at', key_item_1[0])
+                    # print('Mismtach of', diff, 'found at', key_item_1[0])
                     pass
                 else:
                     raise Exception
+
+            if key_item_1[0] in self.previousModelDelta:
+                # print(self.previousModelDelta)
+                if torch.allclose(diff, self.previousModelDelta[key_item_1[0]]):
+                    pass
+                else:
+                    deltas_differ += 1
+                    print('Mismatch found at', key_item_1[0], '[delta]')
+            else:
+                deltas_differ = -1
+            
+            self.previousModelDelta[key_item_1[0]] = diff
+
+        # filemode = 'w'
+        # if path.exists('./weightAverages.txt'):
+        #     filemode = 'a'
+        
+        # print(filemode)
+        # with open('weightAverages.txt', filemode) as f:
+        #     f.write(str(runningDelta/runningDeltaCount) + ' ')
+        #     f.close
+
         if models_differ == 0:
             print('Models match within tolerance!')
+        if deltas_differ == 0:
+            print('Model deltas match within tolerance!')
