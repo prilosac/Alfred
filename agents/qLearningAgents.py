@@ -210,13 +210,13 @@ class QLearningAgent:
         # Perform one step of the optimization (on the target network)
         self.optimize_model()
 
-        filemode = 'w'
-        if path.exists('./explorationRates.txt'):
-            filemode = 'a'
+        # filemode = 'w'
+        # if path.exists('./explorationRates.txt'):
+        #     filemode = 'a'
         
-        with open('explorationRates.txt', filemode) as f:
-            f.write(str(self.explorationRate) + ' ' + str(newState.frame) + '\n')
-            f.close
+        # with open('explorationRates.txt', filemode) as f:
+        #     f.write(str(self.explorationRate) + ' ' + str(newState.frame) + '\n')
+        #     f.close
 
         # Update the target network, copying all weights and biases in DQN
         if oldState.frame % 100 == 0:
