@@ -6,7 +6,7 @@ import numpy as np
 import util
 import copy
 from agents.deepQNetwork import DQN, ReplayMemory
-from agents.RNN import RNN
+# from agents.RNN import RNN
 import torch.optim as optim
 import torch
 import torch.nn.functional as F
