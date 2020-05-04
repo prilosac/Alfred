@@ -23,8 +23,8 @@ runTime = 3600# 10800 # 21600 # 3600 # 1 hour # 5400 # 1.5 hours
 def find_dolphin_dir():
     """Attempts to find the dolphin user directory. None on failure."""
     candidates = ['~/.dolphin-emu', '~/.local/share/.dolphin-emu', '~/.local/share/dolphin-emu', '~/Library/Application Support/Dolphin']
-
     # candidates = ['~/dolphin-test/build/Binaries/Sys', '~/dolphin-emu-nogui/build/Binaries/Sys', '~/dolphin-gurvan/build/Binaries/Sys']
+    
     for candidate in candidates:
         path = os.path.expanduser(candidate)
         print(path)
@@ -62,19 +62,8 @@ def run(char, state, sm, mw, pad, stats):
 
 def make_action(state, pad, mm, char):
     if state.menu == p3.state.Menu.Game:
-        # p1Stocks = state.players[0].__dict__['stocks']
-        # p1Percent = state.players[0].__dict__['percent']
-        # p3Stocks = state.players[2].__dict__['stocks']
-        # p3Percent = state.players[2].__dict__['percent']
-        # if (p1Percent != 0.0 or p3Percent != 0.0):
-        #     print("Player 1    |    Alfred")
-        #     print("------------|----------")
-        #     print("   ", p1Stocks, "      |", "   ", p3Stocks)
-        #     print("   ", p1Percent, "    |", "   ", p3Percent)
-        #     print("------------|----------")
         char.advance(state, pad)
     elif state.menu == p3.state.Menu.Characters:
-        # mm.pick_fox(state, pad)
         char.pick_self(state, pad)
         mm.press_start_lots(state, pad)
     elif state.menu == p3.state.Menu.Stages:
@@ -83,8 +72,6 @@ def make_action(state, pad, mm, char):
         mm.press_start_lots(state, pad)
     elif state.menu == p3.state.Menu.PostGame:
         mm.press_start_lots(state, pad)
-        # raise KeyboardInterrupt
-        # mm.press_start_lots(state, pad)
 
 def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01, model="nosave", learn=True, selfSelect=False, selfChar="Falco", level=9, default=True, headless=False):
     dolphin_dir = find_dolphin_dir()
@@ -116,8 +103,6 @@ def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01,
         "model": model,
         "learn": learn
     }
-    # char = charSwitcher.get(charString)(agent)
-    # fox = p3.fox.Fox()
 
     dolphinPid = None
     process = None
@@ -129,25 +114,11 @@ def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01,
         pad = p3.pad.Pad(pad_path)
         char = charSwitcher.get(charString)(agent, pad, agentOptions)
 
-        # args = []
-        # if platform.system() == "Darwin":
-        #     args = ['/usr/bin/open', '-n', '-a' '/Applications/Dolphin.app', '-e', '/Users/lucasteixeira/Dolphin Games/Super Smash Bros. Melee (v1.02).iso']
-        # elif platform.system() == "Linux":
-        #     args = ['dolphin-emu', '-e', '/home/prilo/DolphinGames/Super Smash Bros. Melee (v1.02).iso']
-        # else:
-        #     sys.exit("Platform not recognized:")
-        # # process = subprocess.run(['/usr/bin/open', '-n', '-a' '/Applications/Dolphin.app', '-e', '/Users/lucasteixeira/Dolphin Games/Super Smash Bros. Melee (v1.02).iso'], check=True)
-        # process = subprocess.Popen(args)
-        # dolphinPid = process.pid
-
         time.sleep(1)
-        # print(default, headless)
         start(default, headless)
-        # time.sleep(12)
 
         if selfSelect:
             pad_enemy_path = dolphin_dir + '/Pipes/p2'
-            # mw_path_enemy = dolphin_dir + '/MemoryWatcher/MemoryWatcher'
             pad_enemy = p3.pad.Pad(pad_enemy_path)
             char_enemy = charSwitcher.get(selfChar)(agent, pad_enemy, agentOptions)
 
@@ -170,25 +141,12 @@ def main(charString, agentString, lr=0.1, dr=0.95, er=1.0, ed=0.0005, emin=0.01,
         with pad as pad, p3.memory_watcher.MemoryWatcher(mw_path) as mw:
             run(char, state, sm, mw, pad, stats)
     except KeyboardInterrupt:
-        # print(dolphinPid)
-        # if(dolphinPid):
-        #     print("killing")
-        #     # os.system("killall dolphin")
-        #     os.kill(dolphinPid, signal.SIGKILL)
-        # if(process):
-        #     print("terminating")
-        #     print(process)
-        #     process.kill()
-        #     # print(process.wait(timeout=30))
-        #     print(process.communicate())
         print('Stopped')
-        stats.save_row_results(model)
-        stats.save_readable_results(model)
+        # stats.save_row_results(model)
+        # stats.save_readable_results(model)
         print(stats)
         if(model != "nosave" and learn):
             torch.save(char.agent.policyNet.state_dict(), "models/" + model)
 
 if __name__ == '__main__':
-    # fox = p3.fox.Fox()
-    # main(fox)
     main("Fox", "Q")

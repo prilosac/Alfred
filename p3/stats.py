@@ -69,8 +69,6 @@ class Stats:
                 self.states.pop(key)
 
         ans = model + ' ' + str(self.stocks_taken) + ' ' + str(self.stocks_lost) + ' ' + '{:.2f}'.format(self.damage_done) + ' ' + '{:.2f}'.format(self.damage_recieved) + ' ' + str(self.games_won) + ' ' + str(self.games_lost) + ' ' + '{:.2f}'.format(self.get_average_stocks_taken_game()) + ' ' +  '{:.2f}'.format(self.get_average_stocks_lost_game()) + ' ' + hex(action_states[0]) + ' ' + hex(action_states[1]) + ' ' + hex(action_states[2]) + ' ' + hex(action_states[3]) + ' ' + hex(action_states[4]) + '\n'
-        
-        # str(p3.state.ActionState(action_states[0])) + ' ' + str(p3.state.ActionState(action_states[1])) + ' ' + str(p3.state.ActionState(action_states[2])) + ' ' + str(p3.state.ActionState(action_states[3])) + ' ' + str(p3.state.ActionState(action_states[4])) + '\n'
 
         filemode = 'w'
         if os.path.exists('./resultsMatrix.txt'):
@@ -105,25 +103,19 @@ class Stats:
     
     def add_stocks_taken(self, state):
         diff = self.prevState.players[0].__dict__['stocks'] - state.players[0].__dict__['stocks']
-        # print(diff)
         if abs(diff) > 1:
             return
         self.stocks_taken += diff
         self.game_stocks_taken += diff
 
     def add_stocks_lost(self, state):
-        # print(self.prevState.players[2].__dict__['stocks'])
-        # print(state.players[2].__dict__['stocks'])
         diff = self.prevState.players[2].__dict__['stocks'] - state.players[2].__dict__['stocks']
-        # print(diff)
         if abs(diff) > 1:
             return
         self.stocks_lost += diff
         self.game_stocks_lost += diff
 
     def add_damage_done(self, state):
-        # print(state.players[0].__dict__['percent'])
-        # print(self.prevState.players[0].__dict__['percent'])
         diff = state.players[0].__dict__['percent'] - self.prevState.players[0].__dict__['percent']
         if abs(diff) > 80:
             return
